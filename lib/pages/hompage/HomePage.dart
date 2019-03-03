@@ -9,11 +9,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:judouapp/utils/HttpRequest.dart';
+import 'model/home_model.dart';
+import 'package:judouapp/utils/Config.dart';
 
 import 'package:flutter_refresh/flutter_refresh.dart';
-//import 'package:DoubanTop250/page/homepage/movieDetailPage.dart';
+import 'package:judouapp/widget/HomeScrollItem.dart';
+import 'package:judouapp/widget/HomeAppBar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,7 +35,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchData(startNo);
+    fetchHomePageData(startNo);
   }
 
   @override
@@ -42,20 +44,12 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
-        title: Text(
-          '豆瓣评分 Top250',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
       ),
       body: new Refresh(
-        onFooterRefresh: onFooterRefresh,
-        onHeaderRefresh: onHeaderRefresh,
         childBuilder: (BuildContext context,
             {ScrollController controller, ScrollPhysics physics}) {
           return Container(
-            child: createList(controller, physics, context),
+            child: HomeAppBar(),
           );
         },
       ),
@@ -150,6 +144,7 @@ class HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
+                    HomeAppBar(),
                     //评分
                     Text(
                       '豆瓣评分: ${item['rating']['average']}',
@@ -192,36 +187,12 @@ class HomePageState extends State<HomePage> {
   }
 
   /*加载数据*/
-  fetchData(int startNo) async {
-    String url =
-        'https://api.douban.com/v2/movie/top250?start=$startNo&&count=$countPrePage';
-    http.Response response = await http.get(url);
-    var result = json.decode(response.body);
-    List newRecord = result['subjects'];
-    setState(() {
-      for (int i = 0; i < newRecord.length; i++) {
-        dataList.add(newRecord[i]);
-      }
+  fetchHomePageData(int startNo) {
+    HttpRequest.get(Config.homeUrl, (result){
+      List data = result['data'];
+      HomeModel model = HomeModel.fromJson(data[0]);
+      print('名字 :'+model.content);
     });
   }
 
-  Future<Null> onFooterRefresh() {
-    return new Future.delayed(new Duration(seconds: 1), () {
-      setState(() {
-        fetchData(startNo += countPrePage);
-      });
-    });
-  }
-
-  Future<Null> onHeaderRefresh() {
-    return new Future.delayed(new Duration(seconds: 1), () {
-      setState(() {
-        //清空数据,重新请求前20
-        if (dataList != null) {
-          dataList.clear();
-        }
-        fetchData(0);
-      });
-    });
-  }
 }
