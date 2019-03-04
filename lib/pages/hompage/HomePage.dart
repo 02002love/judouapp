@@ -14,11 +14,11 @@ import 'model/home_model.dart';
 import 'package:judouapp/utils/Config.dart';
 
 import 'package:flutter_refresh/flutter_refresh.dart';
-import 'package:judouapp/widget/HomeScrollItem.dart';
+import 'package:judouapp/widget/HomeScrollview.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 
 //import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+//import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -71,52 +71,14 @@ class HomePageState extends State<HomePage> {
         body: createListView());
   }
 
-  /*创建 listView*/
+  /*创建 scrollView*/
   createListView() {
-    return CarouselSlider(
-      aspectRatio: 1,
-      enlargeCenterPage: true,
-      items: dataList.map((item) {
-        return Builder(builder: (BuildContext context) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: new BoxDecoration(color: Colors.white),
-            child: Image.network(
-              item.image.url,
-              fit: BoxFit.fill,
-              width: MediaQuery.of(context).size.width,
-              height: 200.0,
-            ),
-          );
-        });
-      }).toList(),
-      height: 300.0,
-      onPageChanged: (){
-        print('变了');
-      },
-    );
-  }
-
-  createListViewItem(HomeModel item, index, cxt) {
-    var row = Center(
-      child: Container(
-        child: Image.network(
-          item.image.url,
-          width: MediaQuery.of(context).size.width,
-        ),
-      ),
-    );
-    return Card(
-      child: InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext ctx) {
-            return;
-          }));
-        },
-        child: row,
-      ),
-    );
+    return HomeScrollView(onPress: (index) {
+      setState(() {
+        commentCount = dataList[index].commentCount.toString();
+        likeCount = dataList[index].likeCount.toString();
+      });
+    }, dataList: dataList);
   }
 
   /*加载数据*/
