@@ -46,7 +46,7 @@ class _CustomButtonState extends State<CustomButton> {
           ],
         ),
         onTap: () {
-          print('哈哈哈哈️');
+          print('哈哈哈️');
         },
       ),
     );

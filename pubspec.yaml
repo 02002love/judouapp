@@ -22,6 +22,8 @@ dependencies:
   flutter_refresh : ^0.0.1 #上拉加载下拉刷新
   dio: ^1.0.0 #网络请求
   json_annotation: ^0.2.3
+#  flutter_swiper : ^1.1.4
+  carousel_slider: ^1.1.0
 
 dev_dependencies:
   flutter_test:
