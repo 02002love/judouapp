@@ -8,15 +8,25 @@
  */
 import 'package:flutter/material.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+
+  HomeAppBar({@required this.child}) : assert(child != null);
+  final Widget child;
+
+  @override
+  Size get preferredSize {
+    return Size.fromHeight(56.0);
+  }
+
+  @override
+  _HomeAppBarState createState() => _HomeAppBarState();
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CustomerTextAndImage(
-        imagePath: 'images/tab/tab_mine.png',
-        title: '112',
-      ),
-    );
+    return SafeArea(child: widget.child);
   }
 }
 
@@ -24,14 +34,23 @@ class HomeAppBar extends StatelessWidget {
 class CustomerTextAndImage extends StatelessWidget {
   const CustomerTextAndImage({Key key, this.imagePath, this.title})
       : super(key: key);
-  final String title;
+
   final String imagePath;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(right: 100.0),
       child: Row(
-        children: <Widget>[Image.asset(imagePath), Text(title)],
+        children: <Widget>[
+          Image.asset(
+            imagePath,
+            height: 30.0,
+            width: 30.0,
+          ),
+          Text(title)
+        ],
       ),
     );
   }

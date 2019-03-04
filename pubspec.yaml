@@ -43,6 +43,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+  #tab图片
     - images/tab/tab_discover.png
     - images/tab/tab_discover_selected.png
     - images/tab/tab_home.png
@@ -51,6 +52,14 @@ flutter:
     - images/tab/tab_mine_selected.png
     - images/tab/tab_moments.png
     - images/tab/tab_moments_selected.png
+  #home页图片
+    - images/home/home_title.png
+    - images/home/icon_home_comment.png
+    - images/home/icon_home_like.png
+    - images/home/icon_home_like_selected.png
+    - images/home/icon_home_share.png
+    - images/home/icon_like.png
+    - images/home/icon_like_selected.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

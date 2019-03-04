@@ -18,7 +18,7 @@ class TabBarController extends StatelessWidget {
     // TODO: implement build
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: const Color(0xffF69409),
+        primaryColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
       home: MainPageWidget(),
@@ -53,7 +53,7 @@ class MainPageState extends State<MainPageWidget> {
         tabTitles[currentIndex],
         style: TextStyle(
           fontSize: 14.0,
-          color: const Color(0xffF69409),
+//          color: const Color(0xffF69409),
         ),
       );
     } else {
