@@ -8,9 +8,11 @@
  */
 import 'package:flutter/material.dart';
 import 'package:judouapp/pages/hompage/model/home_model.dart';
+import 'package:judouapp/widget/VerticalText.dart';
 
 class HomeScrollView extends StatefulWidget {
-  const HomeScrollView({Key key, this.dataList,@required this.onPress}) : super(key: key);
+  const HomeScrollView({Key key, this.dataList, @required this.onPress})
+      : super(key: key);
   final List<HomeModel> dataList;
   final Function onPress;
 
@@ -40,14 +42,53 @@ class _HomeScrollViewState extends State<HomeScrollView>
       children: <Widget>[
         PageView(
           children: widget.dataList.map((item) {
-            return Image.network(item.image.url);
+            return HomeScrollItem(item: item);
           }).toList(),
           onPageChanged: onPageChanged,
         )
       ],
     );
   }
-  onPageChanged (index){
+
+  onPageChanged(index) {
     widget.onPress(index);
+  }
+}
+
+/*  scrollView的 Item  */
+class HomeScrollItem extends StatefulWidget {
+  const HomeScrollItem({Key key, this.item}) : super(key: key);
+  final HomeModel item;
+
+  @override
+  _HomeScrollItemState createState() => _HomeScrollItemState();
+}
+
+class _HomeScrollItemState extends State<HomeScrollItem>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.all(0),
+        child: Stack(
+          children: <Widget>[
+            Image.network(
+              widget.item.image.url,
+              fit: BoxFit.fitWidth,
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 20.0, right: 10.0),
+                child: CustomPaint(
+                  painter: VerticalText(
+                      text: '己亥猪年丙寅月戊戌日',
+                      textStyle: TextStyle(fontSize: 12.0, color: Colors.white),
+                      width: 100,
+                      height: 150),
+                )),
+          ],
+        ));
+    ;
   }
 }
