@@ -20,6 +20,12 @@ class HttpRequest {
         method: GET, params: params, errorCallBack: errorCallBack);
   }
 
+  static void getChinaDate(String url, Function callBack,
+      {Map<String, String> params, Function errorCallBack}) async {
+    _request(url, callBack,
+        method: GET, params: params, errorCallBack: errorCallBack);
+  }
+
   //post请求
   static void post(String url, Function callBack,
       {Map<String, String> params, Function errorCallBack}) async {

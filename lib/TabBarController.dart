@@ -50,10 +50,10 @@ class MainPageState extends State<MainPageWidget> {
   Text getTabTitle(int currentIndex) {
     if (currentIndex == _tabIndex) {
       return Text(
-        tabTitles[currentIndex],
+        _tabIndex == 0 ? '刷新' : tabTitles[currentIndex],
         style: TextStyle(
           fontSize: 14.0,
-//          color: const Color(0xffF69409),
+          color: const Color(0xff515151),
         ),
       );
     } else {

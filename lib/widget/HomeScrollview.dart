@@ -9,6 +9,8 @@
 import 'package:flutter/material.dart';
 import 'package:judouapp/pages/hompage/model/home_model.dart';
 import 'package:judouapp/widget/VerticalText.dart';
+import '../utils/HttpRequest.dart';
+import '../utils/Config.dart';
 
 class HomeScrollView extends StatefulWidget {
   const HomeScrollView({Key key, this.dataList, @required this.onPress})
@@ -66,6 +68,20 @@ class HomeScrollItem extends StatefulWidget {
 
 class _HomeScrollItemState extends State<HomeScrollItem>
     with SingleTickerProviderStateMixin {
+  String cyclicalYear = ''; //己亥年
+  String animal = ''; //猪
+  String cyclicalMonth = ''; //丙寅月
+  String cyclicalDay = ''; //辛丑日
+  String cnmonth = ''; //正月
+  String cnday = ''; //廿九
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchChinaDateData(widget.item.dailyDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,16 +95,65 @@ class _HomeScrollItemState extends State<HomeScrollItem>
               width: MediaQuery.of(context).size.width,
             ),
             Container(
-                margin: EdgeInsets.only(top: 20.0, right: 10.0),
-                child: CustomPaint(
-                  painter: VerticalText(
-                      text: '己亥猪年丙寅月戊戌日',
-                      textStyle: TextStyle(fontSize: 12.0, color: Colors.white),
-                      width: 100,
-                      height: 150),
+                width: 40,
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width - 120, top: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    CustomPaint(
+                      painter: VerticalText(
+                          text: '$cyclicalYear$animal年',
+                          textStyle: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.white,
+                            fontFamily: 'NotoSansCJKsc-Light',
+                          ),
+                          width: 20,
+                          height: 150),
+                    ),
+                    CustomPaint(
+                      painter: VerticalText(
+                          text: '$cyclicalMonth月$cyclicalDay日',
+                          textStyle: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.white,
+                            fontFamily: 'NotoSansCJKsc-Light',
+                          ),
+                          width: 20,
+                          height: 150),
+                    ),
+                    CustomPaint(
+                      painter: VerticalText(
+                          text: '$cnmonth月$cnday',
+                          textStyle: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.white,
+                            fontFamily: 'NotoSansCJKsc-Light',
+                          ),
+                          width: 20,
+                          height: 150),
+                    )
+                  ],
                 )),
           ],
         ));
     ;
+  }
+
+  /*请求中国黄历数据*/
+  fetchChinaDateData(dateString) {
+    HttpRequest.getChinaDate(Config.chinaDate + dateString, (result) {
+      Map chinaDateData = result['data'];
+      print('打印:$chinaDateData');
+      setState(() {
+        cyclicalYear = chinaDateData['cyclicalYear']; //己亥年
+        animal = chinaDateData['animal']; //猪
+        cyclicalMonth = chinaDateData['cyclicalMonth']; //丙寅月
+        cyclicalDay = chinaDateData['cyclicalDay']; //辛丑日
+        cnmonth = chinaDateData['cnmonth']; //正月
+        cnday = chinaDateData['cnday']; //廿九
+      });
+    });
   }
 }

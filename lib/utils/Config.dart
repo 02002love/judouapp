@@ -11,4 +11,6 @@ class Config{
   static const String BaseUrl = 'https://judouapp.com/api/v6';
   //首页请求URL
   static const String homeUrl = '/op/sentences/daily?page=1&per_page=45';
+  //老黄历接口
+  static const String chinaDate = 'https://www.sojson.com/open/api/lunar/json.shtml?date=';
 }
