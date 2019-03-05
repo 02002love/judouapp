@@ -144,41 +144,57 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                 ),
 //日期的号
                 Container(
+                  height: 200,
                   margin: EdgeInsets.only(top: 220, left: 20),
+                  child: Container(
+                    height: 120,
+                    child: Text(
+                        widget.item.dailyDate
+                            .substring(widget.item.dailyDate.length - 2),
+                        style: TextStyle(
+                          height: 1,
+                          color: Colors.white,
+                          fontSize: 110,
+                          shadows: [
+                            Shadow(
+                              // bottomLeft
+                                offset: Offset(-.5, -.5),
+                                color: Colors.black),
+                            Shadow(
+                              // bottomRight
+                                offset: Offset(.5, -.5),
+                                color: Colors.black),
+                            Shadow(
+                              // topRight
+                                offset: Offset(.5, .5),
+                                color: Colors.black),
+                            Shadow(
+                              // topLeft
+                                offset: Offset(-.5, .5),
+                                color: Colors.black),
+                          ],
+                        )
+                    ),
+                  )
+                ),
+                //日期 + 周末
+                Container(
+                  width: 100,
+                  margin: EdgeInsets.only(left: MediaQuery.of(context).size.width - 120, right: 10, top: 300),
                   child: Text(
-                      widget.item.dailyDate
-                          .substring(widget.item.dailyDate.length - 2),
-                      style: TextStyle(color: Colors.white, fontSize: 110)),
-                )
+                    widget.item.dailyDate.substring(0, 7).replaceAll('-', '.'),
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
               ],
             ),
-//日期的号
-//            Container(
-//                width: MediaQuery.of(context).size.width,
-//                height: 20,
-//                margin: EdgeInsets.only(top: 0, left: 20),
-//                child:
-//              Transform.translate(
-//                  //平移
-//                  offset: Offset(0, -131),
-//                  child:
-            ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 10, maxHeight: 11),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 0,
-                child: Text(
-                  widget.item.dailyDate
-                      .substring(widget.item.dailyDate.length - 2),
-                  style: TextStyle(color: Colors.black, fontSize: 110),
-                ),
-              ),
-            ),
-//              ),
-//                ),
 //经典内容
             Container(
-              margin: EdgeInsets.only(top: 50, left: 40, right: 40),
+              margin: EdgeInsets.only(left: 40, right: 40),
               child: Text(
                 widget.item.content,
                 style: TextStyle(

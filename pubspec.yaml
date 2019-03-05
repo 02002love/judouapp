@@ -24,6 +24,7 @@ dependencies:
   json_annotation: ^0.2.3
 #  flutter_swiper : ^1.1.4
 #  carousel_slider: ^1.1.0
+  common_utils: 1.0.9 #工具类,https://pub.dartlang.org/packages/common_utils
 
 dev_dependencies:
   flutter_test:
