@@ -86,56 +86,120 @@ class _HomeScrollItemState extends State<HomeScrollItem>
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(0),
-        child: Stack(
+        //
+        child: Column(
           children: <Widget>[
-            Image.network(
-              widget.item.image.url,
-              fit: BoxFit.fitWidth,
-              height: 300,
-              width: MediaQuery.of(context).size.width,
+            Stack(
+              children: <Widget>[
+//配图
+                Image.network(
+                  widget.item.image.url,
+                  fit: BoxFit.fitWidth,
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                ),
+//中国黄历
+                Container(
+                  width: 40,
+                  margin: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width - 120, top: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      CustomPaint(
+                        painter: VerticalText(
+                            text: '$cnmonth月$cnday',
+                            textStyle: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.white,
+                              fontFamily: 'NotoSansCJKsc-Light',
+                            ),
+                            width: 20,
+                            height: 150),
+                      ),
+                      CustomPaint(
+                        painter: VerticalText(
+                            text: '$cyclicalMonth月$cyclicalDay日',
+                            textStyle: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.white,
+                              fontFamily: 'NotoSansCJKsc-Light',
+                            ),
+                            width: 20,
+                            height: 150),
+                      ),
+                      CustomPaint(
+                        painter: VerticalText(
+                            text: '$cyclicalYear$animal年',
+                            textStyle: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.white,
+                              fontFamily: 'NotoSansCJKsc-Light',
+                            ),
+                            width: 20,
+                            height: 150),
+                      )
+                    ],
+                  ),
+                ),
+//日期的号
+                Container(
+                  margin: EdgeInsets.only(top: 220, left: 20),
+                  child: Text(
+                      widget.item.dailyDate
+                          .substring(widget.item.dailyDate.length - 2),
+                      style: TextStyle(color: Colors.white, fontSize: 110)),
+                )
+              ],
             ),
+//日期的号
+//            Container(
+//                width: MediaQuery.of(context).size.width,
+//                height: 20,
+//                margin: EdgeInsets.only(top: 0, left: 20),
+//                child:
+//              Transform.translate(
+//                  //平移
+//                  offset: Offset(0, -131),
+//                  child:
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 10, maxHeight: 11),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 0,
+                child: Text(
+                  widget.item.dailyDate
+                      .substring(widget.item.dailyDate.length - 2),
+                  style: TextStyle(color: Colors.black, fontSize: 110),
+                ),
+              ),
+            ),
+//              ),
+//                ),
+//经典内容
             Container(
-                width: 40,
-                margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width - 120, top: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CustomPaint(
-                      painter: VerticalText(
-                          text: '$cyclicalYear$animal年',
-                          textStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                            fontFamily: 'NotoSansCJKsc-Light',
-                          ),
-                          width: 20,
-                          height: 150),
-                    ),
-                    CustomPaint(
-                      painter: VerticalText(
-                          text: '$cyclicalMonth月$cyclicalDay日',
-                          textStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                            fontFamily: 'NotoSansCJKsc-Light',
-                          ),
-                          width: 20,
-                          height: 150),
-                    ),
-                    CustomPaint(
-                      painter: VerticalText(
-                          text: '$cnmonth月$cnday',
-                          textStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                            fontFamily: 'NotoSansCJKsc-Light',
-                          ),
-                          width: 20,
-                          height: 150),
-                    )
-                  ],
-                )),
+              margin: EdgeInsets.only(top: 50, left: 40, right: 40),
+              child: Text(
+                widget.item.content,
+                style: TextStyle(
+                  fontFamily: 'NotoSansCJKsc-Light',
+                  fontSize: 18,
+                ),
+              ),
+            ),
+//摘抄或者出处
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.only(top: 30, left: 40, right: 40),
+              child: Text(
+                widget.item.subheading,
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                  fontFamily: 'NotoSansCJKsc-Light',
+                  fontSize: 18,
+                ),
+              ),
+            )
           ],
         ));
     ;
