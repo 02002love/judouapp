@@ -12,6 +12,8 @@ import 'package:judouapp/pages/discover/DiscoverPage.dart';
 import 'package:judouapp/pages/moments/MomentsPage.dart';
 import 'package:judouapp/pages/mine/MinePage.dart';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class TabBarController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -106,6 +108,7 @@ class MainPageState extends State<MainPageWidget> {
     //初始化数据
     initData();
 
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
     return Scaffold(
       body: pageList[_tabIndex],
       bottomNavigationBar: BottomNavigationBar(

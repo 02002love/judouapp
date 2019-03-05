@@ -11,6 +11,7 @@ import 'package:judouapp/pages/hompage/model/home_model.dart';
 import 'package:judouapp/widget/VerticalText.dart';
 import '../utils/HttpRequest.dart';
 import '../utils/Config.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScrollView extends StatefulWidget {
   const HomeScrollView({Key key, this.dataList, @required this.onPress})
@@ -95,7 +96,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                 Image.network(
                   widget.item.image.url,
                   fit: BoxFit.fitWidth,
-                  height: 300,
+                  height: ScreenUtil().setHeight(400),
                   width: MediaQuery.of(context).size.width,
                 ),
 //中国黄历
@@ -144,43 +145,45 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                 ),
 //日期的号
                 Container(
-                  height: 200,
-                  margin: EdgeInsets.only(top: 220, left: 20),
-                  child: Container(
-                    height: 120,
-                    child: Text(
-                        widget.item.dailyDate
-                            .substring(widget.item.dailyDate.length - 2),
-                        style: TextStyle(
-                          height: 1,
-                          color: Colors.white,
-                          fontSize: 110,
-                          shadows: [
-                            Shadow(
-                              // bottomLeft
-                                offset: Offset(-.5, -.5),
-                                color: Colors.black),
-                            Shadow(
-                              // bottomRight
-                                offset: Offset(.5, -.5),
-                                color: Colors.black),
-                            Shadow(
-                              // topRight
-                                offset: Offset(.5, .5),
-                                color: Colors.black),
-                            Shadow(
-                              // topLeft
-                                offset: Offset(-.5, .5),
-                                color: Colors.black),
-                          ],
-                        )
-                    ),
-                  )
-                ),
-                //日期 + 周末
+                    margin: EdgeInsets.only(
+                        top: ScreenUtil().setHeight(220),
+                        left: ScreenUtil().setHeight(20)),
+                    child: Container(
+                      child: Text(
+                          widget.item.dailyDate
+                              .substring(widget.item.dailyDate.length - 2),
+                          style: TextStyle(
+                            height: 1,
+                            color: Colors.white,
+                            fontSize: 110,
+                            shadows: [
+                              Shadow(
+                                  // bottomLeft
+                                  offset: Offset(-.5, -.5),
+                                  color: Colors.black),
+                              Shadow(
+                                  // bottomRight
+                                  offset: Offset(.5, -.5),
+                                  color: Colors.black),
+                              Shadow(
+                                  // topRight
+                                  offset: Offset(.5, .5),
+                                  color: Colors.black),
+                              Shadow(
+                                  // topLeft
+                                  offset: Offset(-.5, .5),
+                                  color: Colors.black),
+                            ],
+                          )),
+                    )),
+//日期 + 周末
                 Container(
-                  width: 100,
-                  margin: EdgeInsets.only(left: MediaQuery.of(context).size.width - 120, right: 10, top: 300),
+                  width: ScreenUtil().setHeight(150),
+                  margin: EdgeInsets.only(
+                      left: ScreenUtil().setHeight(
+                          int.parse(MediaQuery.of(context).size.width.toStringAsFixed(0)) - 120),
+                      right: 10,
+                      top: ScreenUtil().setHeight(300)),
                   child: Text(
                     widget.item.dailyDate.substring(0, 7).replaceAll('-', '.'),
                     textAlign: TextAlign.end,
@@ -194,25 +197,31 @@ class _HomeScrollItemState extends State<HomeScrollItem>
             ),
 //经典内容
             Container(
-              margin: EdgeInsets.only(left: 40, right: 40),
+              height: ScreenUtil().setHeight(120),
+              margin: EdgeInsets.only(
+                  left: ScreenUtil().setHeight(30),
+                  right: ScreenUtil().setHeight(30)),
               child: Text(
                 widget.item.content,
                 style: TextStyle(
                   fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: 18,
+                  fontSize: ScreenUtil().setSp(36),
                 ),
               ),
             ),
 //摘抄或者出处
             Container(
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(top: 30, left: 40, right: 40),
+              margin: EdgeInsets.only(
+                  top: 1,
+                  left: ScreenUtil().setHeight(30),
+                  right: ScreenUtil().setHeight(30)),
               child: Text(
                 widget.item.subheading,
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: 18,
+                  fontSize: ScreenUtil().setSp(36),
                 ),
               ),
             )
