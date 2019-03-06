@@ -70,12 +70,12 @@ class HomeScrollItem extends StatefulWidget {
 
 class _HomeScrollItemState extends State<HomeScrollItem>
     with SingleTickerProviderStateMixin {
-  String cyclicalYear = ''; //己亥年
-  String animal = ''; //猪
-  String cyclicalMonth = ''; //丙寅月
-  String cyclicalDay = ''; //辛丑日
-  String cnmonth = ''; //正月
-  String cnday = ''; //廿九
+  String cyclicalYear = '**'; //己亥年
+  String animal = '*'; //猪
+  String cyclicalMonth = '**'; //丙寅月
+  String cyclicalDay = '**'; //辛丑日
+  String cnmonth = '**'; //正月
+  String cnday = '**'; //廿九
 
   @override
   void initState() {
@@ -99,12 +99,13 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                     child: Center(
                       child: CachedNetworkImage(
                         imageUrl: widget.item.image.url,
-                        placeholder: (context, url) =>
-                            Container(alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              valueColor:
-                              AlwaysStoppedAnimation(Colors.black87),
-                            ),),
+                        placeholder: (context, url) => Container(
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.black87),
+                              ),
+                            ),
                         errorWidget: (context, url, error) {
                           return Container(
                             alignment: Alignment.center,
@@ -117,7 +118,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                                   size: 50,
                                   color: Colors.red,
                                 ),
-                                Text('美图跑丢了️╮(╯_╰)╭️')
+                                Text('美图跑丢了️╮(╯_╰)╭️'),
                               ],
                             ),
                           );
@@ -245,24 +246,27 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                   fontSize: AdaptDevice.px(36),
                 ),
               ),
-            )
+            ),
           ],
         ));
-    ;
   }
 
   /*请求中国黄历数据*/
   fetchChinaDateData(dateString) {
     HttpRequest.getChinaDate(Config.chinaDate + dateString, (result) {
       Map chinaDateData = result['data'];
-      print('打印:$chinaDateData');
+//      print('打印:$chinaDateData');
       setState(() {
-        cyclicalYear = chinaDateData['cyclicalYear']; //己亥年
-        animal = chinaDateData['animal']; //猪
-        cyclicalMonth = chinaDateData['cyclicalMonth']; //丙寅月
-        cyclicalDay = chinaDateData['cyclicalDay']; //辛丑日
-        cnmonth = chinaDateData['cnmonth']; //正月
-        cnday = chinaDateData['cnday']; //廿九
+        if (chinaDateData.isNotEmpty) {
+          cyclicalYear = chinaDateData['cyclicalYear']; //己亥年
+          animal = chinaDateData['animal']; //猪
+          cyclicalMonth = chinaDateData['cyclicalMonth']; //丙寅月
+          cyclicalDay = chinaDateData['cyclicalDay']; //辛丑日
+          cnmonth = chinaDateData['cnmonth']; //正月
+          cnday = chinaDateData['cnday']; //廿九
+        }else{
+
+        }
       });
     });
   }

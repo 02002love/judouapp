@@ -7,6 +7,7 @@
  * Description：
  */
 import 'package:flutter/material.dart';
+import '../utils/Utils.dart';
 
 class CustomButton extends StatefulWidget {
   const CustomButton({Key key, this.iconPath, this.title, this.isSelected})
@@ -36,7 +37,7 @@ class _CustomButtonState extends State<CustomButton> {
             Container(
               height: 40,
               child: Text(
-                widget.title,
+                LongString2shortString.transForm(widget.title),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: 'NotoSansCJKsc-Light',
