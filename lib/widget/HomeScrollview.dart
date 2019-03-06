@@ -12,6 +12,7 @@ import 'package:judouapp/widget/VerticalText.dart';
 import '../utils/HttpRequest.dart';
 import '../utils/Config.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScrollView extends StatefulWidget {
   const HomeScrollView({Key key, this.dataList, @required this.onPress})
@@ -93,10 +94,24 @@ class _HomeScrollItemState extends State<HomeScrollItem>
             Stack(
               children: <Widget>[
 //配图
-                Image.network(widget.item.image.url,
-                    fit: BoxFit.fitWidth,
+                Container(
                     width: AdaptDevice.screenW(),
-                    height: AdaptDevice.screenW() * 2 / 3),
+                    height: AdaptDevice.screenW() * 2 / 3,
+                    child: Center(
+                      child: CachedNetworkImage(
+                        imageUrl: widget.item.image.url,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.black87),),
+                        errorWidget: (context, url, error) => Icon(
+                              Icons.error_outline,
+                              size: 50,
+                              color: Colors.red,
+                            ),
+                        fit: BoxFit.fitWidth,
+                        width: AdaptDevice.screenW(),
+                        height: AdaptDevice.screenW() * 2 / 3,
+                      ),
+                    )),
 //中国黄历
                 Container(
                   width: 40,
@@ -175,10 +190,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                 //日期 + 周末
                 Container(
                   width: AdaptDevice.screenW(),
-                  margin: EdgeInsets.only(
-                      right: 10,
-                      top: AdaptDevice.px(500)
-                  ),
+                  margin: EdgeInsets.only(right: 10, top: AdaptDevice.px(500)),
                   child: Text(
                     widget.item.dailyDate.substring(0, 7).replaceAll('-', '.'),
                     textAlign: TextAlign.end,
