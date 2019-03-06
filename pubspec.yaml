@@ -56,7 +56,7 @@ flutter:
     - images/tab/tab_mine_selected.png
     - images/tab/tab_moments.png
     - images/tab/tab_moments_selected.png
-  #home页图片
+  #首页
     - images/home/home_title.png
     - images/home/icon_home_comment.png
     - images/home/icon_home_like.png
@@ -64,6 +64,10 @@ flutter:
     - images/home/icon_home_share.png
     - images/home/icon_like.png
     - images/home/icon_like_selected.png
+  #动态
+    - images/moments/icon_create_diary.png
+    - images/moments/icon_create_sentence.png
+    - images/moments/icon_create_status.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
