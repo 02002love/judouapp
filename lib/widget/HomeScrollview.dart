@@ -95,18 +95,33 @@ class _HomeScrollItemState extends State<HomeScrollItem>
               children: <Widget>[
 //配图
                 Container(
-                    width: AdaptDevice.screenW(),
-                    height: AdaptDevice.screenW() * 2 / 3,
+                    alignment: Alignment.center,
                     child: Center(
                       child: CachedNetworkImage(
                         imageUrl: widget.item.image.url,
                         placeholder: (context, url) =>
-                            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.black87),),
-                        errorWidget: (context, url, error) => Icon(
-                              Icons.error_outline,
-                              size: 50,
-                              color: Colors.red,
+                            Container(alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                              AlwaysStoppedAnimation(Colors.black87),
+                            ),),
+                        errorWidget: (context, url, error) {
+                          return Container(
+                            alignment: Alignment.center,
+                            margin:
+                                EdgeInsets.only(top: AdaptDevice.screenW() / 4),
+                            child: Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.error_outline,
+                                  size: 50,
+                                  color: Colors.red,
+                                ),
+                                Text('美图跑丢了️╮(╯_╰)╭️')
+                              ],
                             ),
+                          );
+                        },
                         fit: BoxFit.fitWidth,
                         width: AdaptDevice.screenW(),
                         height: AdaptDevice.screenW() * 2 / 3,
