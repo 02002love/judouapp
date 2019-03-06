@@ -11,7 +11,7 @@ import 'package:judouapp/pages/hompage/model/home_model.dart';
 import 'package:judouapp/widget/VerticalText.dart';
 import '../utils/HttpRequest.dart';
 import '../utils/Config.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:judouapp/utils/AdaptDevice.dart';
 
 class HomeScrollView extends StatefulWidget {
   const HomeScrollView({Key key, this.dataList, @required this.onPress})
@@ -93,12 +93,10 @@ class _HomeScrollItemState extends State<HomeScrollItem>
             Stack(
               children: <Widget>[
 //配图
-                Image.network(
-                  widget.item.image.url,
-                  fit: BoxFit.fitWidth,
-                  height: ScreenUtil().setHeight(400),
-                  width: MediaQuery.of(context).size.width,
-                ),
+                Image.network(widget.item.image.url,
+                    fit: BoxFit.fitWidth,
+                    width: AdaptDevice.screenW(),
+                    height: AdaptDevice.screenW() * 2 / 3),
 //中国黄历
                 Container(
                   width: 40,
@@ -146,14 +144,12 @@ class _HomeScrollItemState extends State<HomeScrollItem>
 //日期的号
                 Container(
                     margin: EdgeInsets.only(
-                        top: ScreenUtil().setHeight(220),
-                        left: ScreenUtil().setHeight(20)),
+                        top: AdaptDevice.px(320), left: AdaptDevice.px(20)),
                     child: Container(
                       child: Text(
                           widget.item.dailyDate
                               .substring(widget.item.dailyDate.length - 2),
                           style: TextStyle(
-                            height: 1,
                             color: Colors.white,
                             fontSize: 110,
                             shadows: [
@@ -176,14 +172,13 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                             ],
                           )),
                     )),
-//日期 + 周末
+                //日期 + 周末
                 Container(
-                  width: ScreenUtil().setHeight(150),
+                  width: AdaptDevice.screenW(),
                   margin: EdgeInsets.only(
-                      left: ScreenUtil().setHeight(
-                          int.parse(MediaQuery.of(context).size.width.toStringAsFixed(0)) - 120),
                       right: 10,
-                      top: ScreenUtil().setHeight(300)),
+                      top: AdaptDevice.px(500)
+                  ),
                   child: Text(
                     widget.item.dailyDate.substring(0, 7).replaceAll('-', '.'),
                     textAlign: TextAlign.end,
@@ -195,17 +190,18 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                 ),
               ],
             ),
+
 //经典内容
             Container(
-              height: ScreenUtil().setHeight(120),
               margin: EdgeInsets.only(
-                  left: ScreenUtil().setHeight(30),
-                  right: ScreenUtil().setHeight(30)),
+                  left: AdaptDevice.px(30),
+                  right: AdaptDevice.px(30),
+                  bottom: AdaptDevice.px(10)),
               child: Text(
                 widget.item.content,
                 style: TextStyle(
                   fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: ScreenUtil().setSp(36),
+                  fontSize: AdaptDevice.px(36),
                 ),
               ),
             ),
@@ -213,15 +209,13 @@ class _HomeScrollItemState extends State<HomeScrollItem>
             Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.only(
-                  top: 1,
-                  left: ScreenUtil().setHeight(30),
-                  right: ScreenUtil().setHeight(30)),
+                  top: 1, left: AdaptDevice.px(30), right: AdaptDevice.px(30)),
               child: Text(
                 widget.item.subheading,
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: ScreenUtil().setSp(36),
+                  fontSize: AdaptDevice.px(36),
                 ),
               ),
             )
