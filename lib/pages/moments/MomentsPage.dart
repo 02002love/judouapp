@@ -292,9 +292,10 @@ class BottomOfItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
+      margin:
+          EdgeInsets.only(left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
               iconPaths.length,
               (int index) => Container(
