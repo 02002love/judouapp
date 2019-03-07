@@ -13,11 +13,12 @@ import '../utils/AdaptDevice.dart';
 class CustomButton extends StatefulWidget {
   const CustomButton(
       {Key key,
-      this.iconPath,
-      @required this.title,//如果没有,赋值 =''
-      @required this.isSelected,//如果没有,赋值 =''
+      this.isSelected,
+      @required this.iconPath, //如果没有,赋值 =''
+      @required this.title, //如果没有,赋值 =''
       @required this.btnHeight,
-      @required this.btnWidth})
+      @required this.btnWidth,
+      this.titleHeight})
       : super(key: key);
 
   final String iconPath;
@@ -25,6 +26,7 @@ class CustomButton extends StatefulWidget {
   final String isSelected;
   final double btnWidth;
   final double btnHeight;
+  final double titleHeight;
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -44,7 +46,8 @@ class _CustomButtonState extends State<CustomButton> {
               width: widget.btnHeight,
             ),
             Container(
-              height: 40,
+              height: widget.titleHeight,
+              padding: EdgeInsets.only(left: AdaptDevice.px(8)),
               child: Text(
                 LongString2shortString.transForm(widget.title),
                 style: TextStyle(

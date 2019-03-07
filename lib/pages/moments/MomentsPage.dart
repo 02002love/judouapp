@@ -15,6 +15,7 @@ import 'package:judouapp/utils/Config.dart';
 import 'model/square_model.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MomentsPage extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _MomentsPageState extends State<MomentsPage>
   String title = '';
   int startNo = 0;
   int countPrePage = 20; //每页多少个 item
-  int nowSince1970 = DateTime.now().millisecondsSinceEpoch;
+  int nowSince1970 = DateTime.now().millisecondsSinceEpoch; //现在时间距离1970年的秒数
 
   List<Widget> topOfItem = [];
 
@@ -185,24 +186,43 @@ class _MomentsPageState extends State<MomentsPage>
           Container(
             margin: EdgeInsets.all(AdaptDevice.px(20)),
             alignment: Alignment.centerLeft,
-            child: Text(
-              item.content,
-              style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  item.content,
+                  style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
+                ),
+                item.pictures.length == 0
+                    ? Container()
+                    : Container(child: ArticlePicture(url: item.pictures[0]['url']),margin: EdgeInsets.only(top: AdaptDevice.px(20)),)
+              ],
             ),
           ),
-          BottomOfItem(),
+          //下部: 四个按钮
+          BottomOfItem(
+            likeCount: item.likeCount,
+            commentCount: item.commentCount,
+          )
         ],
       ),
     );
-    return Card(
-        child: InkWell(
+    return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) {
           return Text('硕硕');
         }));
       },
-      child: row,
-    ));
+      child: Column(
+        children: <Widget>[
+          row,
+          Container(
+            color: Color.fromARGB(255, 240, 241, 242),
+            height: AdaptDevice.px(20),
+          ),
+        ],
+      ),
+    );
   }
 
   /*加载广场数据*/
@@ -230,7 +250,10 @@ class TopOfItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AdaptDevice.px(20)),
+      padding: EdgeInsets.only(
+          left: AdaptDevice.px(20),
+          right: AdaptDevice.px(20),
+          top: AdaptDevice.px(20)),
       child: Row(
         children: <Widget>[
           //头像
@@ -258,9 +281,11 @@ class TopOfItem extends StatelessWidget {
                   Text(
                       //日期中文显示: 五分钟前
                       TimelineUtil.format(model.createdAt * 1000,
-                          locTimeMillis: DateTime.now().millisecondsSinceEpoch,
-                          locale: 'zh',
-                          dayFormat: DayFormat.Full),
+                              locTimeMillis:
+                                  DateTime.now().millisecondsSinceEpoch,
+                              locale: 'zh',
+                              dayFormat: DayFormat.Full) +
+                          '发布',
                       style: TextStyle(
                           fontFamily: 'NotoSansCJKsc-Light',
                           fontSize: AdaptDevice.px(20),
@@ -281,31 +306,84 @@ class TopOfItem extends StatelessWidget {
   }
 }
 
+//下部: 四个按钮
 class BottomOfItem extends StatelessWidget {
-  final List iconPaths = [
-    'images/moments/square/icon_like.png',
-    'images/moments/square/icon_comment.png',
-    'images/moments/square/icon_collect.png',
-    'images/moments/square/icon_share.png'
-  ];
+  const BottomOfItem(
+      {Key key,
+      this.iconPaths: const [
+        'images/moments/square/icon_like.png',
+        'images/moments/square/icon_comment.png',
+        'images/moments/square/icon_collect.png',
+        'images/moments/square/icon_share.png'
+      ],
+      this.likeCount: 0,
+      this.commentCount: 0})
+      : super(key: key);
+  final List iconPaths;
+  final int commentCount;
+  final int likeCount;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-          EdgeInsets.only(left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-              iconPaths.length,
-              (int index) => Container(
-                    child: CustomButton(
-                      btnHeight: AdaptDevice.px(40),
-                      btnWidth: AdaptDevice.px(40),
-                      iconPath: iconPaths[index],
-                      title: '',
-                    ),
-                  ))),
+        margin: EdgeInsets.only(
+            left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
+        child: Column(
+          children: <Widget>[
+            Divider(),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(
+                    iconPaths.length,
+                    (int index) => Container(
+                          child: CustomButton(
+                            btnHeight: AdaptDevice.px(40),
+                            btnWidth: AdaptDevice.px(40),
+                            iconPath: iconPaths[index],
+                            title: index == 0
+                                ? likeCount.toString()
+                                : commentCount.toString(),
+                          ),
+                        ))),
+          ],
+        ));
+  }
+}
+
+//文章配图
+class ArticlePicture extends StatelessWidget {
+  const ArticlePicture({Key key, @required this.url}) : super(key: key);
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: url,
+      placeholder: (context, url) => Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.black87),
+            ),
+          ),
+      errorWidget: (context, url, error) {
+        return Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(top: AdaptDevice.screenW() / 4),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.error_outline,
+                size: 50,
+                color: Colors.red,
+              ),
+              Text('美图跑丢了️╮(╯_╰)╭️'),
+            ],
+          ),
+        );
+      },
+      fit: BoxFit.fitWidth,
+      width: AdaptDevice.screenW(),
+      height: AdaptDevice.screenW() * 2 / 3,
     );
   }
 }

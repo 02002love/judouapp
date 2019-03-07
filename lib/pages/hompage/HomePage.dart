@@ -60,12 +60,14 @@ class HomePageState extends State<HomePage> {
               title: commentCount,
               btnHeight: AdaptDevice.px(btnWH),
               btnWidth: AdaptDevice.px(btnWH),
+              titleHeight: 40,
             ),
             CustomButton(
               iconPath: 'images/home/icon_home_like.png',
               title: likeCount,
               btnHeight: AdaptDevice.px(btnWH),
               btnWidth: AdaptDevice.px(btnWH),
+              titleHeight: 40,
             ),
             Container(
               padding: EdgeInsets.only(right: AdaptDevice.px(20)),
@@ -74,6 +76,7 @@ class HomePageState extends State<HomePage> {
                 title: '',
                 btnHeight: AdaptDevice.px(btnWH),
                 btnWidth: AdaptDevice.px(btnWH),
+                titleHeight: 40,
               ),
             )
           ],
