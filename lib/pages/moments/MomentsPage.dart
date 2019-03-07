@@ -357,33 +357,36 @@ class ArticlePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: url,
-      placeholder: (context, url) => Container(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.black87),
-            ),
-          ),
-      errorWidget: (context, url, error) {
-        return Container(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: CachedNetworkImage(
+        imageUrl: url,
+        placeholder: (context, url) => Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.only(top: AdaptDevice.screenW() / 4),
-          child: Column(
-            children: <Widget>[
-              Icon(
-                Icons.error_outline,
-                size: 50,
-                color: Colors.red,
-              ),
-              Text('美图跑丢了️╮(╯_╰)╭️'),
-            ],
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Colors.black87),
           ),
-        );
-      },
-      fit: BoxFit.fitWidth,
-      width: AdaptDevice.screenW(),
-      height: AdaptDevice.screenW() * 2 / 3,
+        ),
+        errorWidget: (context, url, error) {
+          return Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: AdaptDevice.screenW() / 4),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.error_outline,
+                  size: 50,
+                  color: Colors.red,
+                ),
+                Text('美图跑丢了️╮(╯_╰)╭️'),
+              ],
+            ),
+          );
+        },
+        fit: BoxFit.fitWidth,
+        width: AdaptDevice.screenW(),
+        height: AdaptDevice.screenW() * 0.5,
+      ),
     );
   }
 }
