@@ -14,8 +14,8 @@ class CustomButton extends StatefulWidget {
   const CustomButton(
       {Key key,
       this.iconPath,
-      this.title,
-      this.isSelected,
+      @required this.title,//如果没有,赋值 =''
+      @required this.isSelected,//如果没有,赋值 =''
       @required this.btnHeight,
       @required this.btnWidth})
       : super(key: key);

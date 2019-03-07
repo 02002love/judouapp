@@ -181,6 +181,7 @@ class _MomentsPageState extends State<MomentsPage>
         children: <Widget>[
           //上部: 头像,昵称,时间,向下箭头
           TopOfItem(model: item),
+          //文本内容
           Container(
             margin: EdgeInsets.all(AdaptDevice.px(20)),
             alignment: Alignment.centerLeft,
@@ -188,7 +189,8 @@ class _MomentsPageState extends State<MomentsPage>
               item.content,
               style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
             ),
-          )
+          ),
+          BottomOfItem(),
         ],
       ),
     );
@@ -254,6 +256,7 @@ class TopOfItem extends StatelessWidget {
                     ),
                   ),
                   Text(
+                      //日期中文显示: 五分钟前
                       TimelineUtil.format(model.createdAt * 1000,
                           locTimeMillis: DateTime.now().millisecondsSinceEpoch,
                           locale: 'zh',
@@ -266,7 +269,7 @@ class TopOfItem extends StatelessWidget {
               ),
               CustomButton(
                 title: '',
-                iconPath: 'images/moments/cell_more.png',
+                iconPath: 'images/moments/square/cell_more.png',
                 btnWidth: AdaptDevice.px(60),
                 btnHeight: AdaptDevice.px(60),
               )
@@ -274,6 +277,34 @@ class TopOfItem extends StatelessWidget {
           ))
         ],
       ),
+    );
+  }
+}
+
+class BottomOfItem extends StatelessWidget {
+  final List iconPaths = [
+    'images/moments/square/icon_like.png',
+    'images/moments/square/icon_comment.png',
+    'images/moments/square/icon_collect.png',
+    'images/moments/square/icon_share.png'
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+              iconPaths.length,
+              (int index) => Container(
+                    child: CustomButton(
+                      btnHeight: AdaptDevice.px(40),
+                      btnWidth: AdaptDevice.px(40),
+                      iconPath: iconPaths[index],
+                      title: '',
+                    ),
+                  ))),
     );
   }
 }
