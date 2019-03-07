@@ -9,6 +9,11 @@
 import 'package:flutter/material.dart';
 import '../../utils/AdaptDevice.dart';
 
+import 'package:judouapp/utils/HttpRequest.dart';
+import 'package:judouapp/utils/Config.dart';
+
+import 'model/square_model.dart';
+
 class MomentsPage extends StatefulWidget {
   @override
   _MomentsPageState createState() => _MomentsPageState();
@@ -29,6 +34,11 @@ class _MomentsPageState extends State<MomentsPage>
       text: '日记',
     )
   ];
+
+  List squareDataList = []; //广场数据源
+  String title = '';
+  int startNo = 0;
+  int countPrePage = 20; //每页多少个 item
 
   @override
   void initState() {
@@ -53,44 +63,44 @@ class _MomentsPageState extends State<MomentsPage>
               PopupMenuButton(
                 icon: Icon(Icons.add),
                 itemBuilder: (BuildContext ctx) => <PopupMenuItem<String>>[
-                      PopupMenuItem(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Image.asset(
-                                'images/moments/icon_create_sentence.png',
-                                width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
-                            Text('摘抄句子')
-                          ],
-                        ),
-                        value: 'ZLJZ',
-                      ),
-                      PopupMenuItem(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Image.asset('images/moments/icon_create_status.png',
-                                width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
-                            Text('发表动态')
-                          ],
-                        ),
-                        value: 'FBDT',
-                      ),
-                      PopupMenuItem(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Image.asset('images/moments/icon_create_diary.png',
-                                width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
-                            Text('写日记')
-                          ],
-                        ),
-                        value: 'XRJ',
-                      ),
-                    ],
+                  PopupMenuItem(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Image.asset(
+                            'images/moments/icon_create_sentence.png',
+                            width: AdaptDevice.px(40),
+                            height: AdaptDevice.px(40)),
+                        Text('摘抄句子')
+                      ],
+                    ),
+                    value: 'ZLJZ',
+                  ),
+                  PopupMenuItem(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Image.asset('images/moments/icon_create_status.png',
+                            width: AdaptDevice.px(40),
+                            height: AdaptDevice.px(40)),
+                        Text('发表动态')
+                      ],
+                    ),
+                    value: 'FBDT',
+                  ),
+                  PopupMenuItem(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Image.asset('images/moments/icon_create_diary.png',
+                            width: AdaptDevice.px(40),
+                            height: AdaptDevice.px(40)),
+                        Text('写日记')
+                      ],
+                    ),
+                    value: 'XRJ',
+                  ),
+                ],
                 onSelected: (String value) {
                   switch (value) {
                     case 'ZLJZ':
@@ -125,13 +135,46 @@ class _MomentsPageState extends State<MomentsPage>
           body: TabBarView(
               children: tabsList
                   .map((Tab tab) => Center(
-                        child: Text(tab.text + '页面'),
-                      ))
+                child: Text(tab.text + '页面'),
+              ))
                   .toList()),
         ));
   }
 
+/*页面跳转*/
   move2Page(String pathString) {
     print('路由是: ' + pathString);
   }
+
+  /*创建 listView*/
+  createList(controller, physics, context) {
+//    if (dataList.length == 0) {
+//      return CupertinoActivityIndicator();
+//    } else {
+    return ListView.builder(
+      physics: physics,
+      controller: controller,
+      itemCount: squareDataList.length,
+      itemBuilder: (BuildContext context, int position) {
+        return createItem(dataList[position], position, context);
+      },
+    );
+//    }
+  }
+
+  /*加载广场数据*/
+  fetchSquareData() {
+    HttpRequest.get(Config.homeUrl, (result) {
+      List data = result['data'];
+      setState(() {
+        for (var item in data) {
+          SquareModel model = SquareModel.fromJson(item);
+          if (model.isAd) {
+          } else
+            squareDataList.add(model);
+        }
+      });
+    });
+  }
+
 }
