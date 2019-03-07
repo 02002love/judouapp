@@ -68,6 +68,7 @@ flutter:
     - images/moments/icon_create_diary.png
     - images/moments/icon_create_sentence.png
     - images/moments/icon_create_status.png
+    - images/moments/cell_more.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

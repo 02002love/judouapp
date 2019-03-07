@@ -8,14 +8,23 @@
  */
 import 'package:flutter/material.dart';
 import '../utils/Utils.dart';
+import '../utils/AdaptDevice.dart';
 
 class CustomButton extends StatefulWidget {
-  const CustomButton({Key key, this.iconPath, this.title, this.isSelected})
+  const CustomButton(
+      {Key key,
+      this.iconPath,
+      this.title,
+      this.isSelected,
+      @required this.btnHeight,
+      @required this.btnWidth})
       : super(key: key);
 
   final String iconPath;
   final String title;
   final String isSelected;
+  final double btnWidth;
+  final double btnHeight;
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -31,8 +40,8 @@ class _CustomButtonState extends State<CustomButton> {
           children: <Widget>[
             Image.asset(
               widget.iconPath,
-              height: 25,
-              width: 25,
+              height: widget.btnWidth,
+              width: widget.btnHeight,
             ),
             Container(
               height: 40,

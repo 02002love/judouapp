@@ -17,6 +17,8 @@ import 'package:flutter_refresh/flutter_refresh.dart';
 import 'package:judouapp/widget/HomeScrollview.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 
+import '../../utils/AdaptDevice.dart';
+
 //import 'package:flutter_swiper/flutter_swiper.dart';
 //import 'package:carousel_slider/carousel_slider.dart';
 
@@ -33,6 +35,8 @@ class HomePageState extends State<HomePage> {
   String commentCount = '';
   String likeCount = '';
 
+  int btnWH = 50;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,23 +51,29 @@ class HomePageState extends State<HomePage> {
         appBar: AppBar(
           elevation: 0,
           leading: Container(
-            margin: EdgeInsets.only(left: 10),
+            margin: EdgeInsets.only(left: AdaptDevice.px(20)),
             child: ImageIcon(AssetImage('images/home/home_title.png')),
           ),
           actions: <Widget>[
             CustomButton(
               iconPath: 'images/home/icon_home_comment.png',
               title: commentCount,
+              btnHeight: AdaptDevice.px(btnWH),
+              btnWidth: AdaptDevice.px(btnWH),
             ),
             CustomButton(
               iconPath: 'images/home/icon_home_like.png',
               title: likeCount,
+              btnHeight: AdaptDevice.px(btnWH),
+              btnWidth: AdaptDevice.px(btnWH),
             ),
             Container(
-              padding: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(right: AdaptDevice.px(20)),
               child: CustomButton(
                 iconPath: 'images/home/icon_home_share.png',
                 title: '',
+                btnHeight: AdaptDevice.px(btnWH),
+                btnWidth: AdaptDevice.px(btnWH),
               ),
             )
           ],

@@ -253,7 +253,8 @@ class _HomeScrollItemState extends State<HomeScrollItem>
 
   /*请求中国黄历数据*/
   fetchChinaDateData(dateString) {
-    HttpRequest.getChinaDate(Config.chinaDate + dateString, (result) {
+    String baseUrl = Config.chinaDate;
+    HttpRequest.getChinaDate('$baseUrl$dateString', (result) {
       Map chinaDateData = result['data'];
 //      print('打印:$chinaDateData');
       setState(() {
