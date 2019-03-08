@@ -189,9 +189,13 @@ class _MomentsPageState extends State<MomentsPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  item.content,
-                  style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    item.content,
+                    style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
                 item.pictures.length == 0
                     ? Container()
