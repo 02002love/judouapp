@@ -195,7 +195,10 @@ class _MomentsPageState extends State<MomentsPage>
                 ),
                 item.pictures.length == 0
                     ? Container()
-                    : Container(child: ArticlePicture(url: item.pictures[0]['url']),margin: EdgeInsets.only(top: AdaptDevice.px(20)),)
+                    : Container(
+                        child: ArticlePicture(url: item.pictures[0]['url']),
+                        margin: EdgeInsets.only(top: AdaptDevice.px(20)),
+                      )
               ],
             ),
           ),
@@ -350,7 +353,7 @@ class BottomOfItem extends StatelessWidget {
   }
 }
 
-//文章配图
+//文章的配图
 class ArticlePicture extends StatelessWidget {
   const ArticlePicture({Key key, @required this.url}) : super(key: key);
   final String url;
@@ -361,12 +364,17 @@ class ArticlePicture extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: CachedNetworkImage(
         imageUrl: url,
-        placeholder: (context, url) => Container(
-          alignment: Alignment.center,
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.black87),
-          ),
-        ),
+        placeholder: (context, url) => ClipRRect(
+              child: Container(
+                child: Image.asset(
+                  'images/moments/big_image_placeholder.png',
+                  fit: BoxFit.fill,
+                  width: AdaptDevice.screenW(),
+                  height: AdaptDevice.screenW() * 0.5,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
         errorWidget: (context, url, error) {
           return Container(
             alignment: Alignment.center,

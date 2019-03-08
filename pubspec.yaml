@@ -73,6 +73,7 @@ flutter:
     - images/moments/square/icon_comment.png
     - images/moments/square/icon_like.png
     - images/moments/square/icon_share.png
+    - images/moments/big_image_placeholder.png #占位图
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
