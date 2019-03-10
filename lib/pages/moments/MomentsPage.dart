@@ -423,7 +423,7 @@ class ArticlePicture extends StatelessWidget {
   }
 }
 
-//举报, 复制内容, 取消的 Actionsheet弹出
+//举报, 复制内容, 取消的 ActionSheet弹出
 void customActionSheet(BuildContext context) {
   showModalBottomSheet(
       context: context,
@@ -443,6 +443,7 @@ void customActionSheet(BuildContext context) {
               ),
               onTap: () {
                 print('举报成功');
+                Navigator.pop(context);
               },
             ),
             Divider(),
@@ -456,6 +457,7 @@ void customActionSheet(BuildContext context) {
               ),
               onTap: () {
                 print('复制成功');
+                Navigator.pop(context);
               },
             ),
             Container(
@@ -473,6 +475,7 @@ void customActionSheet(BuildContext context) {
               ),
               onTap: () {
                 print('取消了');
+                Navigator.pop(context);
               },
             ),
           ],
