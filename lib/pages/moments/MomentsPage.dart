@@ -68,7 +68,9 @@ class _MomentsPageState extends State<MomentsPage>
             title: Text(
               '动态',
               style: TextStyle(
-                  fontFamily: 'NotoSansCJKsc-Light', color: Colors.black),
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'NotoSansCJKsc-Light',
+                  color: Colors.black),
             ),
             actions: <Widget>[
               PopupMenuButton(
@@ -183,28 +185,8 @@ class _MomentsPageState extends State<MomentsPage>
           //上部: 头像,昵称,时间,向下箭头
           TopOfItem(model: item),
           //文本内容
-          Container(
-            margin: EdgeInsets.all(AdaptDevice.px(20)),
-            alignment: Alignment.centerLeft,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    item.content,
-                    style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                item.pictures.length == 0
-                    ? Container()
-                    : Container(
-                        child: ArticlePicture(url: item.pictures[0]['url']),
-                        margin: EdgeInsets.only(top: AdaptDevice.px(20)),
-                      )
-              ],
-            ),
+          MiddleOfItem(
+            model: item,
           ),
           //下部: 四个按钮
           BottomOfItem(
@@ -224,6 +206,7 @@ class _MomentsPageState extends State<MomentsPage>
         children: <Widget>[
           row,
           Container(
+            //灰色的分割线
             color: Color.fromARGB(255, 240, 241, 242),
             height: AdaptDevice.px(20),
           ),
@@ -300,13 +283,51 @@ class TopOfItem extends StatelessWidget {
                 ],
               ),
               CustomButton(
+                //更多按钮: 举报, 复制内容, 取消
                 title: '',
                 iconPath: 'images/moments/square/cell_more.png',
                 btnWidth: AdaptDevice.px(60),
                 btnHeight: AdaptDevice.px(60),
-              )
+                onTap: () {
+                  print('举报, 复制内容, 取消');
+                  customActionSheet(context);
+                },
+              ),
             ],
           ))
+        ],
+      ),
+    );
+  }
+}
+
+//中部: 文本内容, 配图
+class MiddleOfItem extends StatelessWidget {
+  const MiddleOfItem({Key key, @required this.model}) : super(key: key);
+  final SquareModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(AdaptDevice.px(20)),
+      alignment: Alignment.centerLeft,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              model.content,
+              style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          model.pictures.length == 0
+              ? Container()
+              : Container(
+                  child: ArticlePicture(url: model.pictures[0]['url']),
+                  margin: EdgeInsets.only(top: AdaptDevice.px(20)),
+                )
         ],
       ),
     );
@@ -337,7 +358,7 @@ class BottomOfItem extends StatelessWidget {
             left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
         child: Column(
           children: <Widget>[
-            Divider(),
+            Divider(), //横线
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
@@ -349,7 +370,7 @@ class BottomOfItem extends StatelessWidget {
                             iconPath: iconPaths[index],
                             title: index == 0
                                 ? likeCount.toString()
-                                : commentCount.toString(),
+                                : (index == 1 ? commentCount.toString() : ''),
                           ),
                         ))),
           ],
@@ -382,7 +403,6 @@ class ArticlePicture extends StatelessWidget {
         errorWidget: (context, url, error) {
           return Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(top: AdaptDevice.screenW() / 4),
             child: Column(
               children: <Widget>[
                 Icon(
@@ -401,4 +421,63 @@ class ArticlePicture extends StatelessWidget {
       ),
     );
   }
+}
+
+//举报, 复制内容, 取消的 Actionsheet弹出
+void customActionSheet(BuildContext context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                "举报",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'NotoSansCJKsc-Light',
+                    color: Colors.red,
+                    fontSize: AdaptDevice.px(32)),
+              ),
+              onTap: () {
+                print('举报成功');
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                "复制文字",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'NotoSansCJKsc-Light',
+                    fontSize: AdaptDevice.px(32)),
+              ),
+              onTap: () {
+                print('复制成功');
+              },
+            ),
+            Container(
+              //灰色的分割线
+              color: Color.fromARGB(255, 240, 241, 242),
+              height: AdaptDevice.px(20),
+            ),
+            ListTile(
+              title: Text(
+                "取消",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'NotoSansCJKsc-Light',
+                    fontSize: AdaptDevice.px(32)),
+              ),
+              onTap: () {
+                print('取消了');
+              },
+            ),
+          ],
+        ));
+      }).then((val) {
+    print('val: $val');
+  });
 }

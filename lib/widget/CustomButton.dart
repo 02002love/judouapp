@@ -18,6 +18,7 @@ class CustomButton extends StatefulWidget {
       @required this.title, //如果没有,赋值 =''
       @required this.btnHeight,
       @required this.btnWidth,
+      this.onTap,
       this.titleHeight})
       : super(key: key);
 
@@ -27,6 +28,7 @@ class CustomButton extends StatefulWidget {
   final double btnWidth;
   final double btnHeight;
   final double titleHeight;
+  final Function onTap;
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -58,9 +60,7 @@ class _CustomButtonState extends State<CustomButton> {
             )
           ],
         ),
-        onTap: () {
-          print('哈哈哈️');
-        },
+        onTap: widget.onTap,
       ),
     );
   }
