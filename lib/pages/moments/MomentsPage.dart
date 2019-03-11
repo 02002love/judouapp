@@ -432,49 +432,60 @@ void customActionSheet(BuildContext context) {
             child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ListTile(
-              title: Text(
-                "举报",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'NotoSansCJKsc-Light',
-                    color: Colors.red,
-                    fontSize: AdaptDevice.px(32)),
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "举报",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      color: Colors.red,
+                      fontSize: AdaptDevice.px(32)),
+                ),
               ),
               onTap: () {
-                print('举报成功');
+                print('111举报 事件添加在这里');
                 Navigator.pop(context);
               },
             ),
-            Divider(),
-            ListTile(
-              title: Text(
-                "复制文字",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'NotoSansCJKsc-Light',
-                    fontSize: AdaptDevice.px(32)),
+            Divider(height: AdaptDevice.px(1),),
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "复制文字",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      fontSize: AdaptDevice.px(32)),
+                ),
               ),
               onTap: () {
-                print('复制成功');
+                print('222复制文字 事件添加在这里');
                 Navigator.pop(context);
               },
             ),
             Container(
               //灰色的分割线
               color: Color.fromARGB(255, 240, 241, 242),
-              height: AdaptDevice.px(20),
+              height: AdaptDevice.px(16),
             ),
-            ListTile(
-              title: Text(
-                "取消",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'NotoSansCJKsc-Light',
-                    fontSize: AdaptDevice.px(32)),
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "取消",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      fontSize: AdaptDevice.px(32)),
+                ),
               ),
               onTap: () {
-                print('取消了');
                 Navigator.pop(context);
               },
             ),
