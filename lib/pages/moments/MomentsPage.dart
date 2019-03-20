@@ -62,6 +62,7 @@ class _MomentsPageState extends State<MomentsPage>
         length: tabsList.length,
         child: Scaffold(
           appBar: AppBar(
+            elevation: 0,
             title: Text(
               '动态',
               style: TextStyle(
