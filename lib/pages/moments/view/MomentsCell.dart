@@ -168,7 +168,12 @@ class MiddleOfItem extends StatelessWidget {
           picUrl.length == 0
               ? Container()
               : Container(
-                  child: ArticlePicture(url: picUrl),
+                  child: InkWell(
+                    child: ArticlePicture(url: picUrl),
+                    onTap: () {
+                      print('查看大图');
+                    },
+                  ),
                   margin: EdgeInsets.only(top: AdaptDevice.px(20)),
                 )
         ],

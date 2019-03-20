@@ -66,9 +66,8 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
               child: MomentsCell(
                   avatar: model.user.avatar,
                   nickname: model.user.nickname,
-                  publishedAt:
+                  publishedAt://设置为东八区
                       (int.parse(model.publishedAt) + 28800).toString(),
-                  //设置为东八区
                   uuid: model.uuid,
                   content: model.content,
                   picUrl:
