@@ -54,7 +54,7 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
       return CupertinoActivityIndicator();
     } else {
       return MomentsCell(
-          avatar: model.user.avatar ?? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553080864812&di=bde5687244a1069970791f1efb6f1d2b&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fbdaca9a07e1a8947c00c2f826ebf848750927aa24963-cATwbg_fw658',
+          avatar: model.user.avatar,
           nickname: model.user.nickname,
           publishedAt: model.publishedAt,
           uuid: model.uuid,
@@ -67,8 +67,9 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
 
   /*加载广场详情数据*/
   fetchSquareDetailData() async {
-    var result = await HttpRequest.request(
-        Config.moments_squareDetailUrl + widget.momentId);
+    var result = await HttpRequest.request(Config.moments_squareDetailUrl +
+        widget.momentId +
+        Config.moments_squareDetailUrlPart);
     setState(() {
       model = SquareDetailModel.fromJson(result);
     });
