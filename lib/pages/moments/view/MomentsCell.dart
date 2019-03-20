@@ -7,16 +7,33 @@
  * Description：
  */
 import 'package:flutter/material.dart';
-import 'package:judouapp/pages/moments/model/square_model.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MomentsCell extends StatefulWidget {
-  MomentsCell({Key key, @required this.model}):super(key:key);
+  MomentsCell({
+    Key key,
+    @required this.avatar,
+    @required this.nickname,
+    @required this.publishedAt,
+    @required this.uuid,
+    @required this.content,
+    @required this.picUrl,
+    @required this.likeCount,
+    @required this.commentCount,
+  }) : super(key: key);
 
-  final SquareModel model;
+  final String avatar;
+  final String nickname;
+  final String publishedAt;
+  final String uuid;
+  final String content;
+  final String picUrl;
+  final String likeCount;
+  final String commentCount;
+
   @override
   _MomentsCellState createState() => _MomentsCellState();
 }
@@ -30,16 +47,15 @@ class _MomentsCellState extends State<MomentsCell> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           //上部: 头像,昵称,时间,向下箭头
-          TopOfItem(model: widget.model),
+          TopOfItem(
+              avatar: widget.avatar,
+              nickname: widget.nickname,
+              publishedAt: widget.publishedAt),
           //文本内容
-          MiddleOfItem(
-            model: widget.model,
-          ),
+          MiddleOfItem(content: widget.content, picUrl: widget.picUrl),
           //下部: 四个按钮
           BottomOfItem(
-            likeCount: widget.model.likeCount,
-            commentCount: widget.model.commentCount,
-          )
+              likeCount: widget.likeCount, commentCount: widget.commentCount)
         ],
       ),
     );
@@ -48,8 +64,15 @@ class _MomentsCellState extends State<MomentsCell> {
 
 //上部: 头像,昵称,时间,向下箭头
 class TopOfItem extends StatelessWidget {
-  const TopOfItem({Key key, @required this.model}) : super(key: key);
-  final SquareModel model;
+  const TopOfItem({
+    Key key,
+    @required this.avatar,
+    @required this.nickname,
+    @required this.publishedAt,
+  }) : super(key: key);
+  final String avatar;
+  final String nickname;
+  final String publishedAt;
 
   @override
   Widget build(BuildContext context) {
@@ -65,50 +88,50 @@ class TopOfItem extends StatelessWidget {
             margin: EdgeInsets.only(right: 10),
             child: CircleAvatar(
                 backgroundColor: Colors.white10,
-                backgroundImage: NetworkImage(model.user.avatar)),
+                backgroundImage: NetworkImage(avatar)),
           ),
           Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              //昵称,时间
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  //昵称,时间
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        model.user.nickname,
-                        style: TextStyle(
-                          fontSize: AdaptDevice.px(30),
-                          fontFamily: 'NotoSansCJKsc-Light',
-                        ),
-                      ),
-                      Text(
-                        //日期中文显示: 五分钟前
-                          TimelineUtil.format(model.createdAt * 1000,
+                  Text(
+                    nickname,
+                    style: TextStyle(
+                      fontSize: AdaptDevice.px(30),
+                      fontFamily: 'NotoSansCJKsc-Light',
+                    ),
+                  ),
+                  Text(
+                      //日期中文显示: 五分钟前
+                      TimelineUtil.format(int.parse(publishedAt) * 1000,
                               locTimeMillis:
-                              DateTime.now().millisecondsSinceEpoch,
+                                  DateTime.now().millisecondsSinceEpoch,
                               locale: 'zh',
                               dayFormat: DayFormat.Full) +
-                              '发布',
-                          style: TextStyle(
-                              fontFamily: 'NotoSansCJKsc-Light',
-                              fontSize: AdaptDevice.px(20),
-                              color: Color.fromARGB(255, 210, 215, 223)))
-                    ],
-                  ),
-                  CustomButton(
-                    //更多按钮: 举报, 复制内容, 取消
-                    title: '',
-                    iconPath: 'images/moments/square/cell_more.png',
-                    btnWidth: AdaptDevice.px(60),
-                    btnHeight: AdaptDevice.px(60),
-                    onTap: () {
-                      print('举报, 复制内容, 取消');
-                      customActionSheet(context);
-                    },
-                  ),
+                          '发布',
+                      style: TextStyle(
+                          fontFamily: 'NotoSansCJKsc-Light',
+                          fontSize: AdaptDevice.px(20),
+                          color: Color.fromARGB(255, 210, 215, 223)))
                 ],
-              ))
+              ),
+              CustomButton(
+                //更多按钮: 举报, 复制内容, 取消
+                title: '',
+                iconPath: 'images/moments/square/cell_more.png',
+                btnWidth: AdaptDevice.px(60),
+                btnHeight: AdaptDevice.px(60),
+                onTap: () {
+                  print('举报, 复制内容, 取消');
+                  customActionSheet(context);
+                },
+              ),
+            ],
+          ))
         ],
       ),
     );
@@ -117,8 +140,14 @@ class TopOfItem extends StatelessWidget {
 
 //中部: 文本内容, 配图
 class MiddleOfItem extends StatelessWidget {
-  const MiddleOfItem({Key key, @required this.model}) : super(key: key);
-  final SquareModel model;
+  const MiddleOfItem({
+    Key key,
+    @required this.content,
+    @required this.picUrl,
+  }) : super(key: key);
+
+  final String content;
+  final String picUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -131,17 +160,17 @@ class MiddleOfItem extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-              model.content,
+              content,
               style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
               textAlign: TextAlign.left,
             ),
           ),
-          model.pictures.length == 0
+          picUrl.length == 0
               ? Container()
               : Container(
-            child: ArticlePicture(url: model.pictures[0]['url']),
-            margin: EdgeInsets.only(top: AdaptDevice.px(20)),
-          )
+                  child: ArticlePicture(url: picUrl),
+                  margin: EdgeInsets.only(top: AdaptDevice.px(20)),
+                )
         ],
       ),
     );
@@ -152,18 +181,19 @@ class MiddleOfItem extends StatelessWidget {
 class BottomOfItem extends StatelessWidget {
   const BottomOfItem(
       {Key key,
-        this.iconPaths: const [
-          'images/moments/square/icon_like.png',
-          'images/moments/square/icon_comment.png',
-          'images/moments/square/icon_collect.png',
-          'images/moments/square/icon_share.png'
-        ],
-        this.likeCount: 0,
-        this.commentCount: 0})
+      this.iconPaths: const [
+        'images/moments/square/icon_like.png',
+        'images/moments/square/icon_comment.png',
+        'images/moments/square/icon_collect.png',
+        'images/moments/square/icon_share.png'
+      ],
+      @required this.likeCount,
+      @required this.commentCount})
       : super(key: key);
   final List iconPaths;
-  final int commentCount;
-  final int likeCount;
+
+  final String likeCount;
+  final String commentCount;
 
   @override
   Widget build(BuildContext context) {
@@ -177,16 +207,16 @@ class BottomOfItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
                     iconPaths.length,
-                        (int index) => Container(
-                      child: CustomButton(
-                        btnHeight: AdaptDevice.px(40),
-                        btnWidth: AdaptDevice.px(40),
-                        iconPath: iconPaths[index],
-                        title: index == 0
-                            ? likeCount.toString()
-                            : (index == 1 ? commentCount.toString() : ''),
-                      ),
-                    ))),
+                    (int index) => Container(
+                          child: CustomButton(
+                            btnHeight: AdaptDevice.px(40),
+                            btnWidth: AdaptDevice.px(40),
+                            iconPath: iconPaths[index],
+                            title: index == 0
+                                ? likeCount
+                                : (index == 1 ? commentCount : ''),
+                          ),
+                        ))),
           ],
         ));
   }
@@ -204,16 +234,16 @@ class ArticlePicture extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: url,
         placeholder: (context, url) => ClipRRect(
-          child: Container(
-            child: Image.asset(
-              'images/moments/big_image_placeholder.png',
-              fit: BoxFit.fill,
-              width: AdaptDevice.screenW(),
-              height: AdaptDevice.screenW() * 0.5,
+              child: Container(
+                child: Image.asset(
+                  'images/moments/big_image_placeholder.png',
+                  fit: BoxFit.fill,
+                  width: AdaptDevice.screenW(),
+                  height: AdaptDevice.screenW() * 0.5,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(10),
             ),
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
         errorWidget: (context, url, error) {
           return Container(
             alignment: Alignment.center,
@@ -236,6 +266,7 @@ class ArticlePicture extends StatelessWidget {
     );
   }
 }
+
 //举报, 复制内容, 取消的 ActionSheet弹出
 void customActionSheet(BuildContext context) {
   showModalBottomSheet(
@@ -243,67 +274,69 @@ void customActionSheet(BuildContext context) {
       builder: (BuildContext context) {
         return SafeArea(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    height: AdaptDevice.px(100),
-                    width: AdaptDevice.screenW(),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "举报",
-                      style: TextStyle(
-                          fontFamily: 'NotoSansCJKsc-Light',
-                          color: Colors.red,
-                          fontSize: AdaptDevice.px(32)),
-                    ),
-                  ),
-                  onTap: () {
-                    print('111举报 事件添加在这里');
-                    Navigator.pop(context);
-                  },
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "举报",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      color: Colors.red,
+                      fontSize: AdaptDevice.px(32)),
                 ),
-                Divider(height: AdaptDevice.px(1),),
-                InkWell(
-                  child: Container(
-                    height: AdaptDevice.px(100),
-                    width: AdaptDevice.screenW(),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "复制文字",
-                      style: TextStyle(
-                          fontFamily: 'NotoSansCJKsc-Light',
-                          fontSize: AdaptDevice.px(32)),
-                    ),
-                  ),
-                  onTap: () {
-                    print('222复制文字 事件添加在这里');
-                    Navigator.pop(context);
-                  },
+              ),
+              onTap: () {
+                print('111举报 事件添加在这里');
+                Navigator.pop(context);
+              },
+            ),
+            Divider(
+              height: AdaptDevice.px(1),
+            ),
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "复制文字",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      fontSize: AdaptDevice.px(32)),
                 ),
-                Container(
-                  //灰色的分割线
-                  color: Color.fromARGB(255, 240, 241, 242),
-                  height: AdaptDevice.px(16),
+              ),
+              onTap: () {
+                print('222复制文字 事件添加在这里');
+                Navigator.pop(context);
+              },
+            ),
+            Container(
+              //灰色的分割线
+              color: Color.fromARGB(255, 240, 241, 242),
+              height: AdaptDevice.px(16),
+            ),
+            InkWell(
+              child: Container(
+                height: AdaptDevice.px(100),
+                width: AdaptDevice.screenW(),
+                alignment: Alignment.center,
+                child: Text(
+                  "取消",
+                  style: TextStyle(
+                      fontFamily: 'NotoSansCJKsc-Light',
+                      fontSize: AdaptDevice.px(32)),
                 ),
-                InkWell(
-                  child: Container(
-                    height: AdaptDevice.px(100),
-                    width: AdaptDevice.screenW(),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "取消",
-                      style: TextStyle(
-                          fontFamily: 'NotoSansCJKsc-Light',
-                          fontSize: AdaptDevice.px(32)),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ));
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ));
       }).then((val) {
     print('val: $val');
   });

@@ -95,20 +95,33 @@ class HomePageState extends State<HomePage> {
   }
 
   /*加载数据*/
-  fetchHomePageData() {
-    HttpRequest.get(Config.homeUrl, (result) {
-      List data = result['data'];
-      setState(() {
-        for (var item in data) {
-          HomeModel model = HomeModel.fromJson(item);
-          if (model.isAd) {
-          } else
-            dataList.add(model);
-        }
-        HomeModel firstModel = dataList[0];
-        commentCount = firstModel.commentCount.toString();
-        likeCount = firstModel.likeCount.toString();
-      });
+  fetchHomePageData() async {
+    var result = await HttpRequest.request(Config.homeUrl, method: HttpRequest.GET);
+    List data = result['data'];
+    setState(() {
+      for (var item in data) {
+        HomeModel model = HomeModel.fromJson(item);
+        if (model.isAd) {
+        } else
+          dataList.add(model);
+      }
+      HomeModel firstModel = dataList[0];
+      commentCount = firstModel.commentCount.toString();
+      likeCount = firstModel.likeCount.toString();
     });
+//    HttpRequest.get(Config.homeUrl, (result) {
+//      List data = result['data'];
+//      setState(() {
+//        for (var item in data) {
+//          HomeModel model = HomeModel.fromJson(item);
+//          if (model.isAd) {
+//          } else
+//            dataList.add(model);
+//        }
+//        HomeModel firstModel = dataList[0];
+//        commentCount = firstModel.commentCount.toString();
+//        likeCount = firstModel.likeCount.toString();
+//      });
+//    });
   }
 }

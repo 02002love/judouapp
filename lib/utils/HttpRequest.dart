@@ -9,90 +9,91 @@
 import 'package:dio/dio.dart';
 import 'Config.dart';
 
+/*
+ * 封装 restful 请求
+ *
+ * GET、POST、DELETE、PATCH
+ * 主要作用为统一处理相关事务：
+ *  - 统一处理请求前缀；
+ *  - 统一打印请求信息；
+ *  - 统一打印响应信息；
+ *  - 统一打印报错信息；
+ */
 class HttpRequest {
-  static const String GET = "get";
-  static const String POST = "post";
 
-  //get请求
-  static void get(String url, Function callBack,
-      {Map<String, String> params, Function errorCallBack}) async {
-    _request(Config.BaseUrl + url, callBack,
-        method: GET, params: params, errorCallBack: errorCallBack);
-  }
+  /// global dio object
+  static Dio dio;
 
-  static void getChinaDate(String url, Function callBack,
-      {Map<String, String> params, Function errorCallBack}) async {
-    _request(url, callBack,
-        method: GET, params: params, errorCallBack: errorCallBack);
-  }
+  /// default options
+  static const String API_PREFIX = 'https://judouapp.com/api';
+  static const int CONNECT_TIMEOUT = 10000;
+  static const int RECEIVE_TIMEOUT = 3000;
 
-  //post请求
-  static void post(String url, Function callBack,
-      {Map<String, String> params, Function errorCallBack}) async {
-    _request(url, callBack,
-        method: POST, params: params, errorCallBack: errorCallBack);
-  }
+  /// http request methods
+  static const String GET = 'get';
+  static const String POST = 'post';
+  static const String PUT = 'put';
+  static const String PATCH = 'patch';
+  static const String DELETE = 'delete';
 
-  //具体的还是要看返回数据的基本结构
-  //公共代码部分
-  static void _request(String url, Function callBack,
-      {String method,
-      Map<String, String> params,
-      Function errorCallBack}) async {
-    print("<net> url :<" + method + ">" + url);
+  /// request method
+  static Future<Map> request (
+      String url,
+      {baseUrl, data, method }) async {
 
-    if (params != null && params.isNotEmpty) {
-      print("<net> params :" + params.toString());
-    }
+    data = data ?? {};
+    method = method ?? 'GET';
 
-    String errorMsg = "";
-    int statusCode;
+    /// restful 请求处理
+    /// /gysw/search/hist/:user_id        user_id=27
+    /// 最终生成 url 为     /gysw/search/hist/27
+    data.forEach((key, value) {
+      if (url.indexOf(key) != -1) {
+        url = url.replaceAll(':$key', value.toString());
+      }
+    });
+
+    /// 打印请求相关信息：请求地址、请求方式、请求参数
+    print('请求地址：【' + method + '  ' + url + '】');
+    print('请求参数：' + data.toString());
+
+    Dio dio = createInstance();
+    var result;
+    dio.options.baseUrl = baseUrl ?? API_PREFIX;
 
     try {
-      Response response;
-      if (method == GET) {
-        //组合GET请求的参数
-        if (params != null && params.isNotEmpty) {
-          StringBuffer sb = new StringBuffer("?");
-          params.forEach((key, value) {
-            sb.write("$key" + "=" + "$value" + "&");
-          });
-          String paramStr = sb.toString();
-          paramStr = paramStr.substring(0, paramStr.length - 1);
-          url += paramStr;
-        }
-        response = await Dio().get(url);
-      } else {
-        if (params != null && params.isNotEmpty) {
-          response = await Dio().post(url, data: params);
-        } else {
-          response = await Dio().post(url);
-        }
-      }
+      Response response = await dio.request(url, data: data, options: new Options(method: method));
 
-      statusCode = response.statusCode;
+      result = response.data;
 
-      //处理错误部分
-//      if (statusCode < 0) {
-//        errorMsg = "网络请求错误,状态码:" + statusCode.toString();
-//        _handError(errorCallBack, errorMsg);
-//        return;
-//      }
-
-      if (callBack != null) {
-//        print("<net> response data:" + response.data);
-        callBack(response.data);
-      }
-    } catch (exception) {
-      _handError(errorCallBack, exception.toString());
+      /// 打印响应相关信息
+      print('响应数据：' + response.toString());
+    } on DioError catch (e) {
+      /// 打印请求失败相关信息
+      print('请求出错：' + e.toString());
     }
+
+    return result;
   }
 
-  //处理异常
-  static void _handError(Function errorCallback, String errorMsg) {
-    if (errorCallback != null) {
-      errorCallback(errorMsg);
+  /// 创建 dio 实例对象
+  static Dio createInstance () {
+    if (dio == null) {
+      /// 全局属性：请求前缀、连接超时时间、响应超时时间
+      Options options = new Options(
+        connectTimeout: CONNECT_TIMEOUT,
+        receiveTimeout: RECEIVE_TIMEOUT,
+      );
+
+      dio = new Dio(options);
     }
-    print("<net> errorMsg :" + errorMsg);
+
+    return dio;
   }
+
+  /// 清空 dio 对象
+  static clear () {
+    dio = null;
+  }
+
 }

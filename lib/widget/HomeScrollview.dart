@@ -254,21 +254,21 @@ class _HomeScrollItemState extends State<HomeScrollItem>
   /*请求中国黄历数据*/
   fetchChinaDateData(dateString) {
     String baseUrl = Config.chinaDate;
-    HttpRequest.getChinaDate('$baseUrl$dateString', (result) {
-      Map chinaDateData = result['data'];
-//      print('打印:$chinaDateData');
-      setState(() {
-        if (chinaDateData.isNotEmpty) {
-          cyclicalYear = chinaDateData['cyclicalYear']; //己亥年
-          animal = chinaDateData['animal']; //猪
-          cyclicalMonth = chinaDateData['cyclicalMonth']; //丙寅月
-          cyclicalDay = chinaDateData['cyclicalDay']; //辛丑日
-          cnmonth = chinaDateData['cnmonth']; //正月
-          cnday = chinaDateData['cnday']; //廿九
-        }else{
-
-        }
-      });
-    });
+//    HttpRequest.getChinaDate('$baseUrl$dateString', (result) {
+//        Map chinaDateData = result['data'];
+////      print('打印:$chinaDateData');
+//        setState(() {
+//          if (chinaDateData.isNotEmpty) {
+//            cyclicalYear = chinaDateData['cyclicalYear']; //己亥年
+//            animal = chinaDateData['animal']; //猪
+//            cyclicalMonth = chinaDateData['cyclicalMonth']; //丙寅月
+//            cyclicalDay = chinaDateData['cyclicalDay']; //辛丑日
+//            cnmonth = chinaDateData['cnmonth']; //正月
+//            cnday = chinaDateData['cnday']; //廿九
+//          }else{
+//
+//          }
+//        });
+//    });
   }
 }

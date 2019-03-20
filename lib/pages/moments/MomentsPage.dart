@@ -177,12 +177,20 @@ class _MomentsPageState extends State<MomentsPage>
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) {
-          return MomentsDetailPage();
+          return MomentsDetailPage(momentId: item.uuid);
         }));
       },
       child: Column(
         children: <Widget>[
-          MomentsCell(model: item),
+          MomentsCell(
+              avatar: item.user.avatar,
+              nickname: item.user.nickname,
+              publishedAt: item.createdAt.toString(),
+              uuid: item.uuid,
+              content: item.content,
+              picUrl:item.pictures.length == 0 ? '' : item.pictures[0]['url'],
+              likeCount: item.likeCount.toString(),
+              commentCount: item.commentCount.toString()),
           Container(
             //灰色的分割线
             color: Color.fromARGB(255, 240, 241, 242),
@@ -194,18 +202,28 @@ class _MomentsPageState extends State<MomentsPage>
   }
 
   /*加载广场数据*/
-  fetchSquareData() {
-    HttpRequest.get(Config.moments_squareUrl, (result) {
-      List data = result['data'];
-      print(data);
-      setState(() {
-        for (var item in data) {
-          SquareModel model = SquareModel.fromJson(item);
-          if (model.isAd) {
-          } else
-            squareDataList.add(model);
-        }
-      });
+  fetchSquareData() async {
+    var result = await HttpRequest.request(Config.moments_squareUrl);
+    List data = result['data'];
+    setState(() {
+      for (var item in data) {
+        SquareModel model = SquareModel.fromJson(item);
+        if (model.isAd) {
+        } else
+          squareDataList.add(model);
+      }
     });
+//    HttpRequest.get(Config.moments_squareUrl, (result) {
+//      List data = result['data'];
+//      print(data);
+//      setState(() {
+//        for (var item in data) {
+//          SquareModel model = SquareModel.fromJson(item);
+//          if (model.isAd) {
+//          } else
+//            squareDataList.add(model);
+//        }
+//      });
+//    });
   }
 }
