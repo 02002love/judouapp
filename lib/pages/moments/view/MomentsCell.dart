@@ -242,34 +242,32 @@ class ArticlePicture extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: BigImageHero(
+        isCanClick: !isListCell,
         imgUrl: url,
         tap: () {
-          if (isListCell) {
-            print('是否为listcell : $isListCell , true : 不跳转');
-          } else
-            //自定义动画, 跳转大图页面
-            Navigator.push(
-              context,
-              PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
-                return BigImageHero(
-                  imgUrl: url,
-                  sHeight: AdaptDevice.screenH(),
-                  tap: () {
-                    Navigator.pop(context);
-                  },
-                );
-              }, transitionsBuilder:
-                  (___, Animation<double> animation, ____, Widget child) {
-                return new FadeTransition(
-                  opacity: animation,
-                  child: new RotationTransition(
-                    turns: new Tween<double>(begin: 0.5, end: 1.0)
-                        .animate(animation),
-                    child: child,
-                  ),
-                );
-              }),
-            );
+          //自定义动画, 跳转大图页面
+          Navigator.push(
+            context,
+            PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+              return BigImageHero(
+                imgUrl: url,
+                sHeight: AdaptDevice.screenH(),
+                tap: () {
+                  Navigator.pop(context);
+                },
+              );
+            }, transitionsBuilder:
+                (___, Animation<double> animation, ____, Widget child) {
+              return new FadeTransition(
+                opacity: animation,
+                child: new RotationTransition(
+                  turns: new Tween<double>(begin: 0.5, end: 1.0)
+                      .animate(animation),
+                  child: child,
+                ),
+              );
+            }),
+          );
         },
       ),
     );

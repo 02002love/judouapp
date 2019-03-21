@@ -11,10 +11,17 @@ import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BigImageHero extends StatelessWidget {
-  BigImageHero({Key key, @required this.imgUrl, this.tap, this.sHeight}) : super(key: key);
+  BigImageHero(
+      {Key key,
+      @required this.imgUrl,
+      this.tap,
+      this.sHeight,
+      this.isCanClick = true})
+      : super(key: key);
   final String imgUrl;
   final VoidCallback tap;
   final double sHeight;
+  final bool isCanClick;
 
   @override
   Widget build(BuildContext context) {
@@ -24,42 +31,48 @@ class BigImageHero extends StatelessWidget {
           tag: imgUrl,
           child: Material(
             color: Colors.black,
-            child: InkWell(
-              onTap: tap,
-              child: CachedNetworkImage(
-                imageUrl: imgUrl,
-                placeholder: (context, url) => ClipRRect(
-                      child: Container(
-                        child: Image.asset(
-                          'images/moments/big_image_placeholder.png',
-                          fit: BoxFit.fill,
-                          width: AdaptDevice.screenW(),
-                          height: AdaptDevice.screenW() * 0.5,
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                errorWidget: (context, url, error) {
-                  return Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.error_outline,
-                          size: 50,
-                          color: Colors.red,
-                        ),
-                        Text('美图跑丢了️╮(╯_╰)╭️'),
-                      ],
-                    ),
-                  );
-                },
-                fit: BoxFit.fitWidth,
-                width: AdaptDevice.screenW(),
-                height: sHeight ?? AdaptDevice.screenW() * 0.5,
-              ),
-            ),
+            child: isCanClick
+                ? InkWell(
+                    onTap: tap,
+                    child: makeImage(),
+                  )
+                : makeImage(),
           ),
         ));
+  }
+
+  makeImage() {
+    return CachedNetworkImage(
+      imageUrl: imgUrl,
+      placeholder: (context, url) => ClipRRect(
+            child: Container(
+              child: Image.asset(
+                'images/moments/big_image_placeholder.png',
+                fit: BoxFit.fill,
+                width: AdaptDevice.screenW(),
+                height: AdaptDevice.screenW() * 0.5,
+              ),
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+      errorWidget: (context, url, error) {
+        return Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.error_outline,
+                size: 50,
+                color: Colors.red,
+              ),
+              Text('美图跑丢了️╮(╯_╰)╭️'),
+            ],
+          ),
+        );
+      },
+      fit: BoxFit.fitWidth,
+      width: AdaptDevice.screenW(),
+      height: sHeight ?? AdaptDevice.screenW() * 0.5,
+    );
   }
 }
