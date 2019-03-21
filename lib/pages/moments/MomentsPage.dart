@@ -79,9 +79,10 @@ class _MomentsPageState extends State<MomentsPage>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Image.asset(
-                                'images/moments/icon_create_sentence.png',
-                                width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
+                              'images/moments/icon_create_sentence.png',
+                              width: AdaptDevice.px(40),
+                              height: AdaptDevice.px(40),
+                            ),
                             Text('摘抄句子')
                           ],
                         ),
@@ -93,7 +94,9 @@ class _MomentsPageState extends State<MomentsPage>
                           children: <Widget>[
                             Image.asset('images/moments/icon_create_status.png',
                                 width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
+                                height: AdaptDevice.px(
+                                  40,
+                                )),
                             Text('发表动态')
                           ],
                         ),
@@ -103,9 +106,11 @@ class _MomentsPageState extends State<MomentsPage>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Image.asset('images/moments/icon_create_diary.png',
-                                width: AdaptDevice.px(40),
-                                height: AdaptDevice.px(40)),
+                            Image.asset(
+                              'images/moments/icon_create_diary.png',
+                              width: AdaptDevice.px(40),
+                              height: AdaptDevice.px(40),
+                            ),
                             Text('写日记')
                           ],
                         ),
@@ -129,26 +134,27 @@ class _MomentsPageState extends State<MomentsPage>
             ],
             bottom: TabBar(
               unselectedLabelColor: Color.fromARGB(255, 143, 148, 149),
-              labelStyle: TextStyle(fontSize: AdaptDevice.px(35)),
+              labelStyle: TextStyle(
+                fontSize: AdaptDevice.px(35),
+              ),
               tabs: tabsList,
               indicatorSize: TabBarIndicatorSize.label,
               indicator: UnderlineTabIndicator(
-                  insets: EdgeInsets.only(
-                      bottom: AdaptDevice.px(10),
-                      left: AdaptDevice.px(14),
-                      right: AdaptDevice.px(14)),
-                  borderSide: BorderSide(
-                      color: Color.fromARGB(255, 194, 199, 212),
-                      width: AdaptDevice.px(5),
-                      style: BorderStyle.solid)),
+                insets: EdgeInsets.only(
+                  bottom: AdaptDevice.px(10),
+                  left: AdaptDevice.px(14),
+                  right: AdaptDevice.px(14),
+                ),
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 194, 199, 212),
+                    width: AdaptDevice.px(5),
+                    style: BorderStyle.solid),
+              ),
             ),
           ),
           body: TabBarView(
-              children: tabsList
-                  .map((Tab tab) => Center(
-                        child: createList(),
-                      ))
-                  .toList()),
+            children: createTabBarItem(tabsList),
+          ),
         ));
   }
 
@@ -157,7 +163,31 @@ class _MomentsPageState extends State<MomentsPage>
     print('路由是: ' + pathString);
   }
 
-  /*创建 listView*/
+/*创建 tabBar 的内容*/
+  createTabBarItem(List<Tab> tabs) {
+    List tabBarItems = List<Widget>();
+    for (int i = 0; i < tabs.length; i++) {
+      if (i == 0) {
+        tabBarItems.add(
+          Center(
+            child: createList(),
+          ),
+        );
+      } else if (i == 1) {
+        tabBarItems.add(
+          Text('登录才能订阅哦'),
+        );
+        ;
+      } else {
+        tabBarItems.add(
+          createList(),
+        );
+      }
+    }
+    return tabBarItems;
+  }
+
+  /*创建 广场的listView*/
   createList() {
 //    if (dataList.length == 0) {
 //      return CupertinoActivityIndicator();
@@ -177,22 +207,26 @@ class _MomentsPageState extends State<MomentsPage>
   createItem(SquareModel item, index, context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) {
-          return MomentsDetailPage(momentId: item.uuid);
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext ctx) {
+            return MomentsDetailPage(momentId: item.uuid);
+          }),
+        );
       },
       child: Column(
         children: <Widget>[
           MomentsCell(
-              isListCell: true,
-              avatar: item.user.avatar,
-              nickname: item.user.nickname,
-              publishedAt: item.createdAt.toString(),
-              uuid: item.uuid,
-              content: item.content,
-              picUrl: item.pictures.length == 0 ? '' : item.pictures[0]['url'],
-              likeCount: item.likeCount.toString(),
-              commentCount: item.commentCount.toString()),
+            isListCell: true,
+            avatar: item.user.avatar,
+            nickname: item.user.nickname,
+            publishedAt: item.createdAt.toString(),
+            uuid: item.uuid,
+            content: item.content,
+            picUrl: item.pictures.length == 0 ? '' : item.pictures[0]['url'],
+            likeCount: item.likeCount.toString(),
+            commentCount: item.commentCount.toString(),
+          ),
           Container(
             //灰色的分割线
             color: Color.fromARGB(255, 240, 241, 242),
@@ -215,17 +249,5 @@ class _MomentsPageState extends State<MomentsPage>
           squareDataList.add(model);
       }
     });
-//    HttpRequest.get(Config.moments_squareUrl, (result) {
-//      List data = result['data'];
-//      print(data);
-//      setState(() {
-//        for (var item in data) {
-//          SquareModel model = SquareModel.fromJson(item);
-//          if (model.isAd) {
-//          } else
-//            squareDataList.add(model);
-//        }
-//      });
-//    });
   }
 }

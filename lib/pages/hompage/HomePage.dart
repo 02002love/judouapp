@@ -48,55 +48,65 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leading: Container(
-            margin: EdgeInsets.only(left: AdaptDevice.px(20)),
-            child: ImageIcon(AssetImage('images/home/home_title.png')),
+      appBar: AppBar(
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.only(
+            left: AdaptDevice.px(20),
           ),
-          actions: <Widget>[
-            CustomButton(
-              iconPath: 'images/home/icon_home_comment.png',
-              title: commentCount,
-              btnHeight: AdaptDevice.px(btnWH),
-              btnWidth: AdaptDevice.px(btnWH),
-              titleHeight: 40,
-            ),
-            CustomButton(
-              iconPath: 'images/home/icon_home_like.png',
-              title: likeCount,
-              btnHeight: AdaptDevice.px(btnWH),
-              btnWidth: AdaptDevice.px(btnWH),
-              titleHeight: 40,
-            ),
-            Container(
-              padding: EdgeInsets.only(right: AdaptDevice.px(20)),
-              child: CustomButton(
-                iconPath: 'images/home/icon_home_share.png',
-                title: '',
-                btnHeight: AdaptDevice.px(btnWH),
-                btnWidth: AdaptDevice.px(btnWH),
-                titleHeight: 40,
-              ),
-            )
-          ],
+          child: ImageIcon(
+            AssetImage('images/home/home_title.png'),
+          ),
         ),
-        body: createListView());
+        actions: <Widget>[
+          CustomButton(
+            iconPath: 'images/home/icon_home_comment.png',
+            title: commentCount,
+            btnHeight: AdaptDevice.px(btnWH),
+            btnWidth: AdaptDevice.px(btnWH),
+            titleHeight: 40,
+          ),
+          CustomButton(
+            iconPath: 'images/home/icon_home_like.png',
+            title: likeCount,
+            btnHeight: AdaptDevice.px(btnWH),
+            btnWidth: AdaptDevice.px(btnWH),
+            titleHeight: 40,
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              right: AdaptDevice.px(20),
+            ),
+            child: CustomButton(
+              iconPath: 'images/home/icon_home_share.png',
+              title: '',
+              btnHeight: AdaptDevice.px(btnWH),
+              btnWidth: AdaptDevice.px(btnWH),
+              titleHeight: 40,
+            ),
+          )
+        ],
+      ),
+      body: createListView(),
+    );
   }
 
   /*创建 scrollView*/
   createListView() {
-    return HomeScrollView(onPress: (index) {
-      setState(() {
-        commentCount = dataList[index].commentCount.toString();
-        likeCount = dataList[index].likeCount.toString();
-      });
-    }, dataList: dataList);
+    return HomeScrollView(
+        onPress: (index) {
+          setState(() {
+            commentCount = dataList[index].commentCount.toString();
+            likeCount = dataList[index].likeCount.toString();
+          });
+        },
+        dataList: dataList);
   }
 
   /*加载数据*/
   fetchHomePageData() async {
-    var result = await HttpRequest.request(Config.homeUrl, method: HttpRequest.GET);
+    var result =
+        await HttpRequest.request(Config.homeUrl, method: HttpRequest.GET);
     List data = result['data'];
     setState(() {
       for (var item in data) {
@@ -109,19 +119,5 @@ class HomePageState extends State<HomePage> {
       commentCount = firstModel.commentCount.toString();
       likeCount = firstModel.likeCount.toString();
     });
-//    HttpRequest.get(Config.homeUrl, (result) {
-//      List data = result['data'];
-//      setState(() {
-//        for (var item in data) {
-//          HomeModel model = HomeModel.fromJson(item);
-//          if (model.isAd) {
-//          } else
-//            dataList.add(model);
-//        }
-//        HomeModel firstModel = dataList[0];
-//        commentCount = firstModel.commentCount.toString();
-//        likeCount = firstModel.likeCount.toString();
-//      });
-//    });
   }
 }
