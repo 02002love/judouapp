@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 import 'package:common_utils/common_utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:judouapp/widget/BigImageHero.dart';
 
 class MomentsCell extends StatefulWidget {
   MomentsCell({
@@ -23,8 +23,10 @@ class MomentsCell extends StatefulWidget {
     @required this.picUrl,
     @required this.likeCount,
     @required this.commentCount,
+    this.isListCell = false,
   }) : super(key: key);
 
+  final bool isListCell; //是否为列表的 cell
   final String avatar;
   final String nickname;
   final String publishedAt;
@@ -52,7 +54,11 @@ class _MomentsCellState extends State<MomentsCell> {
               nickname: widget.nickname,
               publishedAt: widget.publishedAt),
           //文本内容
-          MiddleOfItem(content: widget.content, picUrl: widget.picUrl),
+          MiddleOfItem(
+            content: widget.content,
+            picUrl: widget.picUrl,
+            isListCell: widget.isListCell,
+          ),
           //下部: 四个按钮
           BottomOfItem(
               likeCount: widget.likeCount, commentCount: widget.commentCount)
@@ -140,14 +146,16 @@ class TopOfItem extends StatelessWidget {
 
 //中部: 文本内容, 配图
 class MiddleOfItem extends StatelessWidget {
-  const MiddleOfItem({
-    Key key,
-    @required this.content,
-    @required this.picUrl,
-  }) : super(key: key);
+  const MiddleOfItem(
+      {Key key,
+      @required this.content,
+      @required this.picUrl,
+      @required this.isListCell})
+      : super(key: key);
 
   final String content;
   final String picUrl;
+  final bool isListCell; //是否为列表的 cell
 
   @override
   Widget build(BuildContext context) {
@@ -168,12 +176,7 @@ class MiddleOfItem extends StatelessWidget {
           picUrl.length == 0
               ? Container()
               : Container(
-                  child: InkWell(
-                    child: ArticlePicture(url: picUrl),
-                    onTap: () {
-                      print('查看大图');
-                    },
-                  ),
+                  child: ArticlePicture(url: picUrl, isListCell: isListCell),
                   margin: EdgeInsets.only(top: AdaptDevice.px(20)),
                 )
         ],
@@ -229,44 +232,45 @@ class BottomOfItem extends StatelessWidget {
 
 //文章的配图
 class ArticlePicture extends StatelessWidget {
-  const ArticlePicture({Key key, @required this.url}) : super(key: key);
+  const ArticlePicture({Key key, @required this.url, @required this.isListCell})
+      : super(key: key);
   final String url;
+  final bool isListCell;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: CachedNetworkImage(
-        imageUrl: url,
-        placeholder: (context, url) => ClipRRect(
-              child: Container(
-                child: Image.asset(
-                  'images/moments/big_image_placeholder.png',
-                  fit: BoxFit.fill,
-                  width: AdaptDevice.screenW(),
-                  height: AdaptDevice.screenW() * 0.5,
-                ),
-              ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-        errorWidget: (context, url, error) {
-          return Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.error_outline,
-                  size: 50,
-                  color: Colors.red,
-                ),
-                Text('美图跑丢了️╮(╯_╰)╭️'),
-              ],
-            ),
-          );
+      child: BigImageHero(
+        imgUrl: url,
+        tap: () {
+          if (isListCell) {
+            print('是否为listcell : $isListCell , true : 不跳转');
+          } else
+            //自定义动画, 跳转大图页面
+            Navigator.push(
+              context,
+              PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+                return BigImageHero(
+                  imgUrl: url,
+                  sHeight: AdaptDevice.screenH(),
+                  tap: () {
+                    Navigator.pop(context);
+                  },
+                );
+              }, transitionsBuilder:
+                  (___, Animation<double> animation, ____, Widget child) {
+                return new FadeTransition(
+                  opacity: animation,
+                  child: new RotationTransition(
+                    turns: new Tween<double>(begin: 0.5, end: 1.0)
+                        .animate(animation),
+                    child: child,
+                  ),
+                );
+              }),
+            );
         },
-        fit: BoxFit.fitWidth,
-        width: AdaptDevice.screenW(),
-        height: AdaptDevice.screenW() * 0.5,
       ),
     );
   }

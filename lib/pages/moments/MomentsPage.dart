@@ -184,12 +184,13 @@ class _MomentsPageState extends State<MomentsPage>
       child: Column(
         children: <Widget>[
           MomentsCell(
+              isListCell: true,
               avatar: item.user.avatar,
               nickname: item.user.nickname,
               publishedAt: item.createdAt.toString(),
               uuid: item.uuid,
               content: item.content,
-              picUrl:item.pictures.length == 0 ? '' : item.pictures[0]['url'],
+              picUrl: item.pictures.length == 0 ? '' : item.pictures[0]['url'],
               likeCount: item.likeCount.toString(),
               commentCount: item.commentCount.toString()),
           Container(
