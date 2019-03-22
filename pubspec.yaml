@@ -65,6 +65,7 @@ flutter:
     - images/home/icon_home_share.png
     - images/home/icon_like.png
     - images/home/icon_like_selected.png
+    - images/home/icon_author_reference_verified.png
   #动态
     - images/moments/icon_create_diary.png
     - images/moments/icon_create_sentence.png

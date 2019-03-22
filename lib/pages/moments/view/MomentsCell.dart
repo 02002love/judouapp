@@ -11,10 +11,12 @@ import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:judouapp/widget/BigImageHero.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MomentsCell extends StatefulWidget {
   MomentsCell({
     Key key,
+    this.isVerified = false,
     @required this.avatar,
     @required this.nickname,
     @required this.publishedAt,
@@ -23,7 +25,8 @@ class MomentsCell extends StatefulWidget {
     @required this.picUrl,
     @required this.likeCount,
     @required this.commentCount,
-    this.isListCell = false,
+    this.isListCell = false, //是否是广场的列表页
+    this.isFromHomePage = false,
   }) : super(key: key);
 
   final bool isListCell; //是否为列表的 cell
@@ -35,6 +38,8 @@ class MomentsCell extends StatefulWidget {
   final String picUrl;
   final String likeCount;
   final String commentCount;
+  final bool isVerified; //是否为认证身份
+  final bool isFromHomePage; //是否来自首页
 
   @override
   _MomentsCellState createState() => _MomentsCellState();
@@ -50,9 +55,12 @@ class _MomentsCellState extends State<MomentsCell> {
         children: <Widget>[
           //上部: 头像,昵称,时间,向下箭头
           TopOfItem(
-              avatar: widget.avatar,
-              nickname: widget.nickname,
-              publishedAt: widget.publishedAt),
+            isFromHomePage: widget.isFromHomePage,
+            avatar: widget.avatar,
+            nickname: widget.nickname,
+            publishedAt: widget.publishedAt,
+            isVerified: widget.isVerified,
+          ),
           //文本内容
           MiddleOfItem(
             content: widget.content,
@@ -75,10 +83,14 @@ class TopOfItem extends StatelessWidget {
     @required this.avatar,
     @required this.nickname,
     @required this.publishedAt,
+    @required this.isVerified,
+    @required this.isFromHomePage
   }) : super(key: key);
   final String avatar;
   final String nickname;
   final String publishedAt;
+  final bool isVerified; //是否为认证身份
+  final bool isFromHomePage; //是否来自首页 list
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +104,18 @@ class TopOfItem extends StatelessWidget {
           //头像
           Container(
             margin: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-                backgroundColor: Colors.white10,
-                backgroundImage: NetworkImage(avatar)),
+            child: isFromHomePage
+                ? ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl: avatar,
+                      width: AdaptDevice.px(80),
+                      height: AdaptDevice.px(80),
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  )
+                : CircleAvatar(
+                    backgroundColor: Colors.white10,
+                    backgroundImage: NetworkImage(avatar)),
           ),
           Expanded(
               child: Row(
@@ -104,25 +125,38 @@ class TopOfItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    nickname,
-                    style: TextStyle(
-                      fontSize: AdaptDevice.px(30),
-                      fontFamily: 'NotoSansCJKsc-Light',
-                    ),
-                  ),
-                  Text(
-                      //日期中文显示: 五分钟前
-                      TimelineUtil.format(int.parse(publishedAt) * 1000,
-                              locTimeMillis:
-                                  DateTime.now().millisecondsSinceEpoch,
-                              locale: 'zh',
-                              dayFormat: DayFormat.Full) +
-                          '发布',
-                      style: TextStyle(
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        nickname,
+                        style: TextStyle(
+                          fontSize: AdaptDevice.px(30),
                           fontFamily: 'NotoSansCJKsc-Light',
-                          fontSize: AdaptDevice.px(20),
-                          color: Color.fromARGB(255, 210, 215, 223)))
+                        ),
+                      ),
+                      isVerified
+                          ? Image.asset(
+                              'images/home/icon_author_reference_verified.png',
+                              width: AdaptDevice.px(50),
+                              height: AdaptDevice.px(50),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  isFromHomePage
+                      ? Container()
+                      : Text(
+                          //日期中文显示: 五分钟前
+                          TimelineUtil.format(int.parse(publishedAt) * 1000,
+                                  locTimeMillis:
+                                      DateTime.now().millisecondsSinceEpoch,
+                                  locale: 'zh',
+                                  dayFormat: DayFormat.Full) +
+                              '发布',
+                          style: TextStyle(
+                              fontFamily: 'NotoSansCJKsc-Light',
+                              fontSize: AdaptDevice.px(20),
+                              color: Color.fromARGB(255, 210, 215, 223)))
                 ],
               ),
               CustomButton(

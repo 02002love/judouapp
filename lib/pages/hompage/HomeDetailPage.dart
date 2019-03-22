@@ -1,7 +1,7 @@
 /**
  * PackageName：judouapp
  * Author     ：songjinwei
- * Date       ：2019/3/19 17:03
+ * Date       ：2019/3/22 11:09
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
  * Description：
@@ -11,21 +11,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:judouapp/pages/moments/view/MomentsCell.dart';
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
-import 'package:judouapp/pages/moments/model/square_detail_model.dart';
+import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 
-class MomentsDetailPage extends StatefulWidget {
-  MomentsDetailPage({Key key, @required this.momentId}) : super(key: key);
+class HomeDetailPage extends StatefulWidget {
+  HomeDetailPage({Key key, @required this.momentId}) : super(key: key);
   final String momentId;
 
   @override
-  _MomentsDetailPageState createState() => _MomentsDetailPageState();
+  _HomeDetailPageState createState() => _HomeDetailPageState();
 }
 
-class _MomentsDetailPageState extends State<MomentsDetailPage>
+class _HomeDetailPageState extends State<HomeDetailPage>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  SquareDetailModel model;
+  HomeDetailModel model;
 
   @override
   void initState() {
@@ -66,8 +66,17 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
             Container(
               color: Color.fromARGB(255, 249, 249, 249),
               child: MomentsCell(
-                  avatar: model.user.avatar,
-                  nickname: model.user.nickname,
+                  isFromHomePage: true,
+                  isVerified:
+                      model.author == null ? false : model.author.isVerified,
+                  avatar: model.author == null
+                      ? model.reference.cover
+                      : (model.author.cover.length == 0
+                          ? 'http://judou.b0.upaiyun.com/uploads/authors/2018/05/367eb2cd-ab3e-4720-8b48-c3d64272f8b8.png'
+                          : model.author.cover),
+                  nickname: model.author == null
+                      ? model.reference.name
+                      : model.author.name,
                   publishedAt: //设置为东八区
                       (int.parse(model.publishedAt) + 28800).toString(),
                   uuid: model.uuid,
@@ -104,7 +113,7 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
         widget.momentId +
         Config.moments_squareDetailUrlPart);
     setState(() {
-      model = SquareDetailModel.fromJson(result);
+      model = HomeDetailModel.fromJson(result);
     });
   }
 }

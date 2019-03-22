@@ -13,6 +13,8 @@ import '../utils/HttpRequest.dart';
 import '../utils/Config.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+//详情
+import 'package:judouapp/pages/hompage/HomeDetailPage.dart';
 
 class HomeScrollView extends StatefulWidget {
   const HomeScrollView({Key key, this.dataList, @required this.onPress})
@@ -89,12 +91,13 @@ class _HomeScrollItemState extends State<HomeScrollItem>
     return Container(
         margin: EdgeInsets.all(0),
         //
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
+        child: InkWell(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
 //配图
-                Container(
+                  Container(
                     alignment: Alignment.center,
                     child: Center(
                       child: CachedNetworkImage(
@@ -127,127 +130,151 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                         width: AdaptDevice.screenW(),
                         height: AdaptDevice.screenW() * 2 / 3,
                       ),
-                    )),
-//中国黄历
-                Container(
-                  width: 40,
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width - 120, top: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      CustomPaint(
-                        painter: VerticalText(
-                            text: '$cnmonth月$cnday',
-                            textStyle: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontFamily: 'NotoSansCJKsc-Light',
-                            ),
-                            width: 20,
-                            height: 150),
-                      ),
-                      CustomPaint(
-                        painter: VerticalText(
-                            text: '$cyclicalMonth月$cyclicalDay日',
-                            textStyle: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontFamily: 'NotoSansCJKsc-Light',
-                            ),
-                            width: 20,
-                            height: 150),
-                      ),
-                      CustomPaint(
-                        painter: VerticalText(
-                            text: '$cyclicalYear$animal年',
-                            textStyle: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.white,
-                              fontFamily: 'NotoSansCJKsc-Light',
-                            ),
-                            width: 20,
-                            height: 150),
-                      )
-                    ],
-                  ),
-                ),
-//日期的号
-                Container(
-                    margin: EdgeInsets.only(
-                        top: AdaptDevice.px(320), left: AdaptDevice.px(20)),
-                    child: Container(
-                      child: Text(
-                          widget.item.dailyDate
-                              .substring(widget.item.dailyDate.length - 2),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 110,
-                            shadows: [
-                              Shadow(
-                                  // bottomLeft
-                                  offset: Offset(-.5, -.5),
-                                  color: Colors.black),
-                              Shadow(
-                                  // bottomRight
-                                  offset: Offset(.5, -.5),
-                                  color: Colors.black),
-                              Shadow(
-                                  // topRight
-                                  offset: Offset(.5, .5),
-                                  color: Colors.black),
-                              Shadow(
-                                  // topLeft
-                                  offset: Offset(-.5, .5),
-                                  color: Colors.black),
-                            ],
-                          )),
-                    )),
-                //日期 + 周末
-                Container(
-                  width: AdaptDevice.screenW(),
-                  margin: EdgeInsets.only(right: 10, top: AdaptDevice.px(500)),
-                  child: Text(
-                    widget.item.dailyDate.substring(0, 7).replaceAll('-', '.'),
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontFamily: 'NotoSansCJKsc-Light',
-                      fontSize: 18,
                     ),
                   ),
-                ),
-              ],
-            ),
+//中国黄历
+                  Container(
+                    width: 40,
+                    margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width - 120, top: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        CustomPaint(
+                          painter: VerticalText(
+                              text: '$cnmonth月$cnday',
+                              textStyle: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.white,
+                                fontFamily: 'NotoSansCJKsc-Light',
+                              ),
+                              width: 20,
+                              height: 150),
+                        ),
+                        CustomPaint(
+                          painter: VerticalText(
+                              text: '$cyclicalMonth月$cyclicalDay日',
+                              textStyle: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.white,
+                                fontFamily: 'NotoSansCJKsc-Light',
+                              ),
+                              width: 20,
+                              height: 150),
+                        ),
+                        CustomPaint(
+                          painter: VerticalText(
+                              text: '$cyclicalYear$animal年',
+                              textStyle: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.white,
+                                fontFamily: 'NotoSansCJKsc-Light',
+                              ),
+                              width: 20,
+                              height: 150),
+                        )
+                      ],
+                    ),
+                  ),
+//日期的号
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: AdaptDevice.px(320),
+                      left: AdaptDevice.px(20),
+                    ),
+                    child: Container(
+                      child: Text(
+                        widget.item.dailyDate
+                            .substring(widget.item.dailyDate.length - 2),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 110,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-.5, -.5),
+                                color: Colors.black),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(.5, -.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topRight
+                                offset: Offset(.5, .5),
+                                color: Colors.black),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-.5, .5),
+                                color: Colors.black),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  //日期 + 周末
+                  Container(
+                    width: AdaptDevice.screenW(),
+                    margin: EdgeInsets.only(
+                      right: 10,
+                      top: AdaptDevice.px(500),
+                    ),
+                    child: Text(
+                      widget.item.dailyDate
+                          .substring(0, 7)
+                          .replaceAll('-', '.'),
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                        fontFamily: 'NotoSansCJKsc-Light',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
 //经典内容
-            Container(
-              margin: EdgeInsets.only(
+              Container(
+                margin: EdgeInsets.only(
                   left: AdaptDevice.px(30),
                   right: AdaptDevice.px(30),
-                  bottom: AdaptDevice.px(10)),
-              child: Text(
-                widget.item.content,
-                style: TextStyle(
-                  fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: AdaptDevice.px(36),
+                  bottom: AdaptDevice.px(10),
+                ),
+                child: Text(
+                  widget.item.content,
+                  style: TextStyle(
+                    fontFamily: 'NotoSansCJKsc-Light',
+                    fontSize: AdaptDevice.px(36),
+                  ),
                 ),
               ),
-            ),
 //摘抄或者出处
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(
-                  top: 1, left: AdaptDevice.px(30), right: AdaptDevice.px(30)),
-              child: Text(
-                widget.item.subheading,
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                  fontFamily: 'NotoSansCJKsc-Light',
-                  fontSize: AdaptDevice.px(36),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(
+                  top: 1,
+                  left: AdaptDevice.px(30),
+                  right: AdaptDevice.px(30),
+                ),
+                child: Text(
+                  widget.item.subheading,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'NotoSansCJKsc-Light',
+                    fontSize: AdaptDevice.px(36),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+          onTap: () {
+            print('跳转详情');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (BuildContext ctx) {
+                return HomeDetailPage(momentId: widget.item.uuid);
+              }),
+            );
+          },
         ));
   }
 
