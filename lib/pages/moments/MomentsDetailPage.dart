@@ -8,15 +8,30 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:judouapp/pages/moments/view/MomentsCell.dart';
+import 'package:judouapp/pages/moments/view/SquareCell.dart';
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/pages/moments/model/square_detail_model.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 
 class MomentsDetailPage extends StatefulWidget {
-  MomentsDetailPage({Key key, @required this.momentId}) : super(key: key);
+  MomentsDetailPage(
+      {Key key,
+      @required this.momentId,
+      this.avatar,
+      this.nickname,
+      this.publishedAt,
+      this.uuid,
+      this.content,
+      this.picUrl})
+      : super(key: key);
   final String momentId;
+  final String avatar;
+  final String nickname;
+  final String publishedAt;
+  final String uuid;
+  final String content;
+  final String picUrl;
 
   @override
   _MomentsDetailPageState createState() => _MomentsDetailPageState();
@@ -50,6 +65,7 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
       body: Container(
         child: createChild(),
         color: Color.fromARGB(255, 240, 241, 242),
+        height: AdaptDevice.screenH(),
       ),
     );
   }
@@ -65,7 +81,7 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
           children: <Widget>[
             Container(
               color: Color.fromARGB(255, 249, 249, 249),
-              child: MomentsCell(
+              child: SquareCell(
                   avatar: model.user.avatar,
                   nickname: model.user.nickname,
                   publishedAt: //设置为东八区
@@ -75,7 +91,7 @@ class _MomentsDetailPageState extends State<MomentsDetailPage>
                   picUrl:
                       model.pictures.length == 0 ? '' : model.pictures[0].url,
                   likeCount: model.likeCount.toString(),
-                  commentCount: model.commentCount.toString()),
+                  commentCount: model.commentCount.toString(),),
             ),
             Container(
               height: AdaptDevice.px(550),

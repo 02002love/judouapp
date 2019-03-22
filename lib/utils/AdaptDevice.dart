@@ -17,27 +17,36 @@ class AdaptDevice {
   static double _botBarH = mediaQuery.padding.bottom;
   static double _pixelRatio = mediaQuery.devicePixelRatio;
   static var _ratio;
-  static init(int number){
+
+  static init(int number) {
     int uiWidth = number is int ? number : 750;
     _ratio = _width / uiWidth;
   }
-  static px(number){
-    if(!(_ratio is double || _ratio is int)){AdaptDevice.init(750);}
+
+  static px(number) {
+    if (!(_ratio is double || _ratio is int)) {
+      AdaptDevice.init(750);
+    }
     return number * _ratio;
   }
-  static onePx(){
-    return 1/_pixelRatio;
+
+  static onePx() {
+    return 1 / _pixelRatio;
   }
-  static screenW(){
+
+  static screenW() {
     return _width;
   }
-  static screenH(){
+
+  static screenH() {
     return _height;
   }
-  static padTopH(){
+
+  static padTopH() {
     return _topBarH;
   }
-  static padBotH(){
+
+  static padBotH() {
     return _botBarH;
   }
 }

@@ -13,8 +13,8 @@ import 'package:common_utils/common_utils.dart';
 import 'package:judouapp/widget/BigImageHero.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class MomentsCell extends StatefulWidget {
-  MomentsCell({
+class SquareCell extends StatefulWidget {
+  SquareCell({
     Key key,
     this.isVerified = false,
     @required this.avatar,
@@ -42,10 +42,10 @@ class MomentsCell extends StatefulWidget {
   final bool isFromHomePage; //是否来自首页
 
   @override
-  _MomentsCellState createState() => _MomentsCellState();
+  _SquareCellState createState() => _SquareCellState();
 }
 
-class _MomentsCellState extends State<MomentsCell> {
+class _SquareCellState extends State<SquareCell> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -96,9 +96,10 @@ class TopOfItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          left: AdaptDevice.px(20),
-          right: AdaptDevice.px(20),
-          top: AdaptDevice.px(20)),
+        left: AdaptDevice.px(20),
+        right: AdaptDevice.px(20),
+        top: AdaptDevice.px(20),
+      ),
       child: Row(
         children: <Widget>[
           //头像
@@ -115,63 +116,67 @@ class TopOfItem extends StatelessWidget {
                   )
                 : CircleAvatar(
                     backgroundColor: Colors.white10,
-                    backgroundImage: NetworkImage(avatar)),
+                    backgroundImage: NetworkImage(avatar),
+                  ),
           ),
           Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              //昵称,时间
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        nickname,
-                        style: TextStyle(
-                          fontSize: AdaptDevice.px(30),
-                          fontFamily: 'NotoSansCJKsc-Light',
-                        ),
-                      ),
-                      isVerified
-                          ? Image.asset(
-                              'images/home/icon_author_reference_verified.png',
-                              width: AdaptDevice.px(50),
-                              height: AdaptDevice.px(50),
-                            )
-                          : Container()
-                    ],
-                  ),
-                  isFromHomePage
-                      ? Container()
-                      : Text(
-                          //日期中文显示: 五分钟前
-                          TimelineUtil.format(int.parse(publishedAt) * 1000,
-                                  locTimeMillis:
-                                      DateTime.now().millisecondsSinceEpoch,
-                                  locale: 'zh',
-                                  dayFormat: DayFormat.Full) +
-                              '发布',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                //昵称,时间
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          nickname,
                           style: TextStyle(
+                            fontSize: AdaptDevice.px(30),
+                            fontFamily: 'NotoSansCJKsc-Light',
+                          ),
+                        ),
+                        isVerified
+                            ? Image.asset(
+                                'images/home/icon_author_reference_verified.png',
+                                width: AdaptDevice.px(50),
+                                height: AdaptDevice.px(50),
+                              )
+                            : Container()
+                      ],
+                    ),
+                    isFromHomePage
+                        ? Container()
+                        : Text(
+                            //日期中文显示: 五分钟前
+                            TimelineUtil.format(int.parse(publishedAt) * 1000,
+                                    locTimeMillis:
+                                        DateTime.now().millisecondsSinceEpoch,
+                                    locale: 'zh',
+                                    dayFormat: DayFormat.Full) +
+                                '发布',
+                            style: TextStyle(
                               fontFamily: 'NotoSansCJKsc-Light',
                               fontSize: AdaptDevice.px(20),
-                              color: Color.fromARGB(255, 210, 215, 223)))
-                ],
-              ),
-              CustomButton(
-                //更多按钮: 举报, 复制内容, 取消
-                title: '',
-                iconPath: 'images/moments/square/cell_more.png',
-                btnWidth: AdaptDevice.px(60),
-                btnHeight: AdaptDevice.px(60),
-                onTap: () {
-                  print('举报, 复制内容, 取消');
-                  customActionSheet(context);
-                },
-              ),
-            ],
-          ))
+                              color: Color.fromARGB(255, 210, 215, 223),
+                            ),
+                          )
+                  ],
+                ),
+                CustomButton(
+                  //更多按钮: 举报, 复制内容, 取消
+                  title: '',
+                  iconPath: 'images/moments/square/cell_more.png',
+                  btnWidth: AdaptDevice.px(60),
+                  btnHeight: AdaptDevice.px(60),
+                  onTap: () {
+                    print('举报, 复制内容, 取消');
+                    customActionSheet(context);
+                  },
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -194,7 +199,9 @@ class MiddleOfItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(AdaptDevice.px(20)),
+      margin: EdgeInsets.all(
+        AdaptDevice.px(20),
+      ),
       alignment: Alignment.centerLeft,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,7 +218,9 @@ class MiddleOfItem extends StatelessWidget {
               ? Container()
               : Container(
                   child: ArticlePicture(url: picUrl, isListCell: isListCell),
-                  margin: EdgeInsets.only(top: AdaptDevice.px(20)),
+                  margin: EdgeInsets.only(
+                    top: AdaptDevice.px(20),
+                  ),
                 )
         ],
       ),
@@ -240,27 +249,32 @@ class BottomOfItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(
-            left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
-        child: Column(
-          children: <Widget>[
-            Divider(), //横线
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                    iconPaths.length,
-                    (int index) => Container(
-                          child: CustomButton(
-                            btnHeight: AdaptDevice.px(40),
-                            btnWidth: AdaptDevice.px(40),
-                            iconPath: iconPaths[index],
-                            title: index == 0
-                                ? likeCount
-                                : (index == 1 ? commentCount : ''),
-                          ),
-                        ))),
-          ],
-        ));
+      margin: EdgeInsets.only(
+        left: AdaptDevice.px(20),
+        right: AdaptDevice.px(20),
+      ),
+      child: Column(
+        children: <Widget>[
+          Divider(), //横线
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              iconPaths.length,
+              (int index) => Container(
+                    child: CustomButton(
+                      btnHeight: AdaptDevice.px(40),
+                      btnWidth: AdaptDevice.px(40),
+                      iconPath: iconPaths[index],
+                      title: index == 0
+                          ? likeCount
+                          : (index == 1 ? commentCount : ''),
+                    ),
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -314,70 +328,74 @@ void customActionSheet(BuildContext context) {
       context: context,
       builder: (BuildContext context) {
         return SafeArea(
-            child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            InkWell(
-              child: Container(
-                height: AdaptDevice.px(100),
-                width: AdaptDevice.screenW(),
-                alignment: Alignment.center,
-                child: Text(
-                  "举报",
-                  style: TextStyle(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              InkWell(
+                child: Container(
+                  height: AdaptDevice.px(100),
+                  width: AdaptDevice.screenW(),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "举报",
+                    style: TextStyle(
                       fontFamily: 'NotoSansCJKsc-Light',
                       color: Colors.red,
-                      fontSize: AdaptDevice.px(32)),
+                      fontSize: AdaptDevice.px(32),
+                    ),
+                  ),
                 ),
+                onTap: () {
+                  print('111举报 事件添加在这里');
+                  Navigator.pop(context);
+                },
               ),
-              onTap: () {
-                print('111举报 事件添加在这里');
-                Navigator.pop(context);
-              },
-            ),
-            Divider(
-              height: AdaptDevice.px(1),
-            ),
-            InkWell(
-              child: Container(
-                height: AdaptDevice.px(100),
-                width: AdaptDevice.screenW(),
-                alignment: Alignment.center,
-                child: Text(
-                  "复制文字",
-                  style: TextStyle(
+              Divider(
+                height: AdaptDevice.px(1),
+              ),
+              InkWell(
+                child: Container(
+                  height: AdaptDevice.px(100),
+                  width: AdaptDevice.screenW(),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "复制文字",
+                    style: TextStyle(
                       fontFamily: 'NotoSansCJKsc-Light',
-                      fontSize: AdaptDevice.px(32)),
+                      fontSize: AdaptDevice.px(32),
+                    ),
+                  ),
                 ),
+                onTap: () {
+                  print('222复制文字 事件添加在这里');
+                  Navigator.pop(context);
+                },
               ),
-              onTap: () {
-                print('222复制文字 事件添加在这里');
-                Navigator.pop(context);
-              },
-            ),
-            Container(
-              //灰色的分割线
-              color: Color.fromARGB(255, 240, 241, 242),
-              height: AdaptDevice.px(16),
-            ),
-            InkWell(
-              child: Container(
-                height: AdaptDevice.px(100),
-                width: AdaptDevice.screenW(),
-                alignment: Alignment.center,
-                child: Text(
-                  "取消",
-                  style: TextStyle(
+              Container(
+                //灰色的分割线
+                color: Color.fromARGB(255, 240, 241, 242),
+                height: AdaptDevice.px(16),
+              ),
+              InkWell(
+                child: Container(
+                  height: AdaptDevice.px(100),
+                  width: AdaptDevice.screenW(),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "取消",
+                    style: TextStyle(
                       fontFamily: 'NotoSansCJKsc-Light',
-                      fontSize: AdaptDevice.px(32)),
+                      fontSize: AdaptDevice.px(32),
+                    ),
+                  ),
                 ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ));
+            ],
+          ),
+        );
       }).then((val) {
     print('val: $val');
   });

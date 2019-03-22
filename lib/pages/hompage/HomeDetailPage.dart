@@ -8,7 +8,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:judouapp/pages/moments/view/MomentsCell.dart';
+import 'package:judouapp/pages/moments/view/SquareCell.dart';
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
@@ -65,7 +65,7 @@ class _HomeDetailPageState extends State<HomeDetailPage>
           children: <Widget>[
             Container(
               color: Color.fromARGB(255, 249, 249, 249),
-              child: MomentsCell(
+              child: SquareCell(
                   isFromHomePage: true,
                   isVerified:
                       model.author == null ? false : model.author.isVerified,
