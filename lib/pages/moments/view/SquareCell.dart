@@ -298,6 +298,7 @@ class ArticlePicture extends StatelessWidget {
             context,
             PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
               return BigImageHero(
+                isShowSaveBtn: true,
                 imgUrl: url,
                 sHeight: AdaptDevice.screenH(),
                 tap: () {

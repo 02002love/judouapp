@@ -50,6 +50,7 @@ class _HomeDetailPageState extends State<HomeDetailPage>
       body: Container(
         child: createChild(),
         color: Color.fromARGB(255, 240, 241, 242),
+        height: AdaptDevice.screenH(),
       ),
     );
   }

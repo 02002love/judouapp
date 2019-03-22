@@ -14,8 +14,8 @@ class CustomButton extends StatefulWidget {
   const CustomButton(
       {Key key,
       this.isSelected,
-      @required this.iconPath, //如果没有,赋值 =''
-      @required this.title, //如果没有,赋值 =''
+      this.iconPath = '', //如果没有,赋值 =''
+      this.title = '', //如果没有,赋值 =''
       @required this.btnHeight,
       @required this.btnWidth,
       this.onTap,

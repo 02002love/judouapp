@@ -184,7 +184,15 @@ class _MomentsPageState extends State<MomentsPage>
         );
       } else if (i == 1) {
         tabBarItems.add(
-          Text('登录才能订阅哦'),
+          Center(
+            child: Text(
+              '登录才能订阅哦',
+              style: TextStyle(
+                  fontSize: AdaptDevice.px(30),
+                  fontFamily: 'NotoSansCJKsc-Light',
+                  color: Colors.black38),
+            ),
+          ),
         );
         ;
       } else {
