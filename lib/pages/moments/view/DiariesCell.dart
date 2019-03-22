@@ -1,7 +1,7 @@
 /**
  * PackageName：judouapp
  * Author     ：songjinwei
- * Date       ：2019/3/19 17:27
+ * Date       ：2019/3/22 16:49
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
  * Description：
@@ -13,39 +13,29 @@ import 'package:common_utils/common_utils.dart';
 import 'package:judouapp/widget/BigImageHero.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class MomentsCell extends StatefulWidget {
-  MomentsCell({
+class DiariesCell extends StatefulWidget {
+  DiariesCell({
     Key key,
-    this.isVerified = false,
     @required this.avatar,
     @required this.nickname,
     @required this.publishedAt,
     @required this.uuid,
     @required this.content,
     @required this.picUrl,
-    @required this.likeCount,
-    @required this.commentCount,
-    this.isListCell = false, //是否是广场的列表页
-    this.isFromHomePage = false,
   }) : super(key: key);
 
-  final bool isListCell; //是否为列表的 cell
   final String avatar;
   final String nickname;
   final String publishedAt;
   final String uuid;
   final String content;
   final String picUrl;
-  final String likeCount;
-  final String commentCount;
-  final bool isVerified; //是否为认证身份
-  final bool isFromHomePage; //是否来自首页
 
   @override
-  _MomentsCellState createState() => _MomentsCellState();
+  _DiariesCellState createState() => _DiariesCellState();
 }
 
-class _MomentsCellState extends State<MomentsCell> {
+class _DiariesCellState extends State<DiariesCell> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,21 +45,15 @@ class _MomentsCellState extends State<MomentsCell> {
         children: <Widget>[
           //上部: 头像,昵称,时间,向下箭头
           TopOfItem(
-            isFromHomePage: widget.isFromHomePage,
             avatar: widget.avatar,
             nickname: widget.nickname,
             publishedAt: widget.publishedAt,
-            isVerified: widget.isVerified,
           ),
           //文本内容
           MiddleOfItem(
             content: widget.content,
             picUrl: widget.picUrl,
-            isListCell: widget.isListCell,
           ),
-          //下部: 四个按钮
-          BottomOfItem(
-              likeCount: widget.likeCount, commentCount: widget.commentCount)
         ],
       ),
     );
@@ -104,18 +88,9 @@ class TopOfItem extends StatelessWidget {
           //头像
           Container(
             margin: EdgeInsets.only(right: 10),
-            child: isFromHomePage
-                ? ClipRRect(
-                    child: CachedNetworkImage(
-                      imageUrl: avatar,
-                      width: AdaptDevice.px(80),
-                      height: AdaptDevice.px(80),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  )
-                : CircleAvatar(
-                    backgroundColor: Colors.white10,
-                    backgroundImage: NetworkImage(avatar)),
+            child: CircleAvatar(
+                backgroundColor: Colors.white10,
+                backgroundImage: NetworkImage(avatar)),
           ),
           Expanded(
               child: Row(
@@ -134,29 +109,20 @@ class TopOfItem extends StatelessWidget {
                           fontFamily: 'NotoSansCJKsc-Light',
                         ),
                       ),
-                      isVerified
-                          ? Image.asset(
-                              'images/home/icon_author_reference_verified.png',
-                              width: AdaptDevice.px(50),
-                              height: AdaptDevice.px(50),
-                            )
-                          : Container()
                     ],
                   ),
-                  isFromHomePage
-                      ? Container()
-                      : Text(
-                          //日期中文显示: 五分钟前
-                          TimelineUtil.format(int.parse(publishedAt) * 1000,
-                                  locTimeMillis:
-                                      DateTime.now().millisecondsSinceEpoch,
-                                  locale: 'zh',
-                                  dayFormat: DayFormat.Full) +
-                              '发布',
-                          style: TextStyle(
-                              fontFamily: 'NotoSansCJKsc-Light',
-                              fontSize: AdaptDevice.px(20),
-                              color: Color.fromARGB(255, 210, 215, 223)))
+                  Text(
+                      //日期中文显示: 五分钟前
+                      TimelineUtil.format(int.parse(publishedAt) * 1000,
+                              locTimeMillis:
+                                  DateTime.now().millisecondsSinceEpoch,
+                              locale: 'zh',
+                              dayFormat: DayFormat.Full) +
+                          '发布',
+                      style: TextStyle(
+                          fontFamily: 'NotoSansCJKsc-Light',
+                          fontSize: AdaptDevice.px(20),
+                          color: Color.fromARGB(255, 210, 215, 223)))
                 ],
               ),
               CustomButton(
@@ -180,16 +146,14 @@ class TopOfItem extends StatelessWidget {
 
 //中部: 文本内容, 配图
 class MiddleOfItem extends StatelessWidget {
-  const MiddleOfItem(
-      {Key key,
-      @required this.content,
-      @required this.picUrl,
-      @required this.isListCell})
-      : super(key: key);
+  const MiddleOfItem({
+    Key key,
+    @required this.content,
+    @required this.picUrl,
+  }) : super(key: key);
 
   final String content;
   final String picUrl;
-  final bool isListCell; //是否为列表的 cell
 
   @override
   Widget build(BuildContext context) {
@@ -199,84 +163,36 @@ class MiddleOfItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          picUrl.length == 0
+              ? Container()
+              : Container(
+                  child: ArticlePicture(url: picUrl),
+                ),
           Container(
             alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: AdaptDevice.px(20)),
             child: Text(
               content,
               style: TextStyle(fontFamily: 'NotoSansCJKsc-Light'),
               textAlign: TextAlign.left,
             ),
           ),
-          picUrl.length == 0
-              ? Container()
-              : Container(
-                  child: ArticlePicture(url: picUrl, isListCell: isListCell),
-                  margin: EdgeInsets.only(top: AdaptDevice.px(20)),
-                )
         ],
       ),
     );
   }
 }
 
-//下部: 四个按钮
-class BottomOfItem extends StatelessWidget {
-  const BottomOfItem(
-      {Key key,
-      this.iconPaths: const [
-        'images/moments/square/icon_like.png',
-        'images/moments/square/icon_comment.png',
-        'images/moments/square/icon_collect.png',
-        'images/moments/square/icon_share.png'
-      ],
-      @required this.likeCount,
-      @required this.commentCount})
-      : super(key: key);
-  final List iconPaths;
-
-  final String likeCount;
-  final String commentCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(
-            left: AdaptDevice.px(20), right: AdaptDevice.px(20)),
-        child: Column(
-          children: <Widget>[
-            Divider(), //横线
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                    iconPaths.length,
-                    (int index) => Container(
-                          child: CustomButton(
-                            btnHeight: AdaptDevice.px(40),
-                            btnWidth: AdaptDevice.px(40),
-                            iconPath: iconPaths[index],
-                            title: index == 0
-                                ? likeCount
-                                : (index == 1 ? commentCount : ''),
-                          ),
-                        ))),
-          ],
-        ));
-  }
-}
-
 //文章的配图
 class ArticlePicture extends StatelessWidget {
-  const ArticlePicture({Key key, @required this.url, @required this.isListCell})
-      : super(key: key);
+  const ArticlePicture({Key key, @required this.url}) : super(key: key);
   final String url;
-  final bool isListCell;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: BigImageHero(
-        isCanClick: !isListCell,
         imgUrl: url,
         tap: () {
           //自定义动画, 跳转大图页面

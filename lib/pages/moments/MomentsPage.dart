@@ -13,6 +13,7 @@ import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/pages/moments/model/square_model.dart';
 import 'package:judouapp/pages/moments/MomentsDetailPage.dart';
 import 'package:judouapp/pages/moments/view/MomentsCell.dart';
+import 'package:judouapp/pages/moments/view/DiariesCell.dart';
 
 class MomentsPage extends StatefulWidget {
   @override
@@ -36,6 +37,7 @@ class _MomentsPageState extends State<MomentsPage>
   ];
 
   List<SquareModel> squareDataList = []; //广场数据源
+  List<SquareModel> diariesDataList = []; //日记数据源
   String title = '';
   int startNo = 0;
   int countPrePage = 20; //每页多少个 item
@@ -48,6 +50,7 @@ class _MomentsPageState extends State<MomentsPage>
     _controller = AnimationController(vsync: this);
     super.initState();
     fetchSquareData();
+    fetchDiariesData();
   }
 
   @override
@@ -170,7 +173,7 @@ class _MomentsPageState extends State<MomentsPage>
       if (i == 0) {
         tabBarItems.add(
           Center(
-            child: createList(),
+            child: createSquareList(),
           ),
         );
       } else if (i == 1) {
@@ -180,7 +183,7 @@ class _MomentsPageState extends State<MomentsPage>
         ;
       } else {
         tabBarItems.add(
-          createList(),
+          createDiariesList(),
         );
       }
     }
@@ -188,7 +191,7 @@ class _MomentsPageState extends State<MomentsPage>
   }
 
   /*创建 广场的listView*/
-  createList() {
+  createSquareList() {
 //    if (dataList.length == 0) {
 //      return CupertinoActivityIndicator();
 //    } else {
@@ -197,7 +200,23 @@ class _MomentsPageState extends State<MomentsPage>
 //      controller: controller,
       itemCount: squareDataList.length,
       itemBuilder: (BuildContext context, int position) {
-        return createItem(squareDataList[position], position, context);
+        return createItem(squareDataList[position], 0, context); //0 : 广场 list
+      },
+    );
+//    }
+  }
+
+  /*创建 日记的listView*/
+  createDiariesList() {
+//    if (dataList.length == 0) {
+//      return CupertinoActivityIndicator();
+//    } else {
+    return ListView.builder(
+//      physics: physics,
+//      controller: controller,
+      itemCount: diariesDataList.length,
+      itemBuilder: (BuildContext context, int position) {
+        return createItem(diariesDataList[position], 2, context); //2: 日记 list
       },
     );
 //    }
@@ -216,17 +235,27 @@ class _MomentsPageState extends State<MomentsPage>
       },
       child: Column(
         children: <Widget>[
-          MomentsCell(
-            isListCell: true,
-            avatar: item.user.avatar,
-            nickname: item.user.nickname,
-            publishedAt: item.createdAt.toString(),
-            uuid: item.uuid,
-            content: item.content,
-            picUrl: item.pictures.length == 0 ? '' : item.pictures[0]['url'],
-            likeCount: item.likeCount.toString(),
-            commentCount: item.commentCount.toString(),
-          ),
+          index == 0
+              ? MomentsCell(
+                  isListCell: true,
+                  avatar: item.user.avatar,
+                  nickname: item.user.nickname,
+                  publishedAt: item.createdAt.toString(),
+                  uuid: item.uuid,
+                  content: item.content,
+                  picUrl:
+                      item.pictures.length == 0 ? '' : item.pictures[0]['url'],
+                  likeCount: item.likeCount.toString(),
+                  commentCount: item.commentCount.toString(),
+                )
+              : DiariesCell(
+                  avatar: item.user.avatar,
+                  nickname: item.user.nickname,
+                  publishedAt: item.createdAt.toString(),
+                  uuid: item.uuid,
+                  content: item.content,
+                  picUrl:
+                      item.pictures.length == 0 ? '' : item.pictures[0]['url']),
           Container(
             //灰色的分割线
             color: Color.fromARGB(255, 240, 241, 242),
@@ -247,6 +276,18 @@ class _MomentsPageState extends State<MomentsPage>
         if (model.isAd) {
         } else
           squareDataList.add(model);
+      }
+    });
+  }
+
+  /*加载数据*/
+  fetchDiariesData() async {
+    var result = await HttpRequest.request(Config.moments_diariesUrl);
+    List data = result['data'];
+    setState(() {
+      for (var item in data) {
+        SquareModel model = SquareModel.fromJson(item);
+        diariesDataList.add(model);
       }
     });
   }

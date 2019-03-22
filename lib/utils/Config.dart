@@ -23,6 +23,15 @@ class Config {
   static const String moments_squareDetailUrlPart =
       '?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=aeb2b4523e6d377e32d4fc39ed3eacd8&system_version=12.1.4&timestamp=1552979797&version=3.7.0&version_code=45';
 
+  //日记列表
+  static const String moments_diariesUrl =
+      'v5/diaries?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&page=1&per_page=20&platform=ios&signature=b2ca32ae9d304e5cebbc2e9b8a2aa327&system_version=12.1.4&timestamp=1553213868&version=3.7.0&version_code=45';
+
+  //日记列表的详情 也是首页的详情
+  static const String moments_diariesDetailUrl = '/v6/op/sentences/';
+  static const String moments_diariesDetailUrlPart =
+      '?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=aeb2b4523e6d377e32d4fc39ed3eacd8&system_version=12.1.4&timestamp=1552979797&version=3.7.0&version_code=45';
+
   //老黄历接口
   static const String chinaDate =
       'https://www.sojson.com/open/api/lunar/json.shtml?date=';
