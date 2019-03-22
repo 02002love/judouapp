@@ -4,7 +4,7 @@
  * Date       ：2019/3/19 17:27
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
- * Description：
+ * Description：广场列表的 cell
  */
 import 'package:flutter/material.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';

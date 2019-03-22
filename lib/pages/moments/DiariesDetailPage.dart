@@ -4,7 +4,7 @@
  * Date       ：2019/3/22 19:28
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
- * Description：
+ * Description：日记列表 cell的详情
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

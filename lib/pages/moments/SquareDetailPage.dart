@@ -4,7 +4,7 @@
  * Date       ：2019/3/19 17:03
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
- * Description：
+ * Description：广场列表 cell的详情
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,8 +14,8 @@ import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/pages/moments/model/square_detail_model.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 
-class MomentsDetailPage extends StatefulWidget {
-  MomentsDetailPage(
+class SquareDetailPage extends StatefulWidget {
+  SquareDetailPage(
       {Key key,
       @required this.momentId,
       this.avatar,
@@ -34,10 +34,10 @@ class MomentsDetailPage extends StatefulWidget {
   final String picUrl;
 
   @override
-  _MomentsDetailPageState createState() => _MomentsDetailPageState();
+  _SquareDetailPageState createState() => _SquareDetailPageState();
 }
 
-class _MomentsDetailPageState extends State<MomentsDetailPage>
+class _SquareDetailPageState extends State<SquareDetailPage>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   SquareDetailModel model;

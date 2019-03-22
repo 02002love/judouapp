@@ -4,14 +4,13 @@
  * Date       ：2019/3/22 16:49
  * Email      ：songjinwei007@gmail.com
  * Version    ：1.0
- * Description：
+ * Description：日记列表的 cell
  */
 import 'package:flutter/material.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:judouapp/widget/BigImageHero.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class DiariesCell extends StatefulWidget {
   DiariesCell({

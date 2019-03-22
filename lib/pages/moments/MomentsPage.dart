@@ -12,7 +12,7 @@ import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/pages/moments/model/square_model.dart';
 
-import 'package:judouapp/pages/moments/MomentsDetailPage.dart';
+import 'package:judouapp/pages/moments/SquareDetailPage.dart';
 import 'package:judouapp/pages/moments/DiariesDetailPage.dart';
 
 import 'package:judouapp/pages/moments/view/SquareCell.dart';
@@ -238,7 +238,7 @@ class _MomentsPageState extends State<MomentsPage>
           context,
           MaterialPageRoute(builder: (BuildContext ctx) {
             return index == 0
-                ? MomentsDetailPage(momentId: item.uuid)
+                ? SquareDetailPage(momentId: item.uuid)
                 : DiariesDetailPage(
                     avatar: item.user.avatar,
                     nickname: item.user.nickname,
