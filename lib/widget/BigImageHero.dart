@@ -10,9 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:judouapp/utils/HttpRequest.dart';
-import 'dart:typed_data';
+import 'package:save_image_2_native/save_image_2_native.dart';
 
 class BigImageHero extends StatelessWidget {
   BigImageHero(
@@ -47,7 +45,7 @@ class BigImageHero extends StatelessWidget {
                             Container(
                               alignment: Alignment.bottomCenter,
                               padding:
-                                  EdgeInsets.only(bottom: AdaptDevice.px(200)),
+                                  EdgeInsets.only(bottom: AdaptDevice.px(100)),
                               child: FlatButton(
                                 color: Color.fromARGB(255, 59, 60, 62),
                                 shape: RoundedRectangleBorder(
@@ -62,8 +60,7 @@ class BigImageHero extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () {
-                                  print('保存图片');
-                                  saveImage();
+                                  saveImage(imgUrl);
                                 },
                               ),
                             )
@@ -112,11 +109,10 @@ class BigImageHero extends StatelessWidget {
     );
   }
 
-  /*保存图片到相册*/
-  saveImage() async {
-//    ByteData byteData = await HttpRequest.request('http://upload.art.ifeng.com/2017/0425/1493105660290.jpg');
-//    final result = await ImageGallerySaver.save(byteData.buffer.asUint8List());
+  saveImage(String url) async {
+    var saveStatus = await SaveImage2Native.saveImage2NativeMethod(imgUrl: url);
 
+    print(saveStatus == 1 ? '成功': '失败');
 
   }
 }
