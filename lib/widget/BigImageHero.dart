@@ -11,6 +11,7 @@ import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:save_image_2_native/save_image_2_native.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BigImageHero extends StatelessWidget {
   BigImageHero(
@@ -113,6 +114,15 @@ class BigImageHero extends StatelessWidget {
     var saveStatus = await SaveImage2Native.saveImage2NativeMethod(imgUrl: url);
 
     print(saveStatus == 1 ? '成功': '失败');
+    Fluttertoast.showToast(
+        msg: saveStatus == 1 ? '保存成功': '保存失败',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: AdaptDevice.px(30)
+    );
 
   }
 }

@@ -11,6 +11,8 @@ import 'package:judouapp/pages/hompage/HomePage.dart';
 import 'package:judouapp/pages/discover/DiscoverPage.dart';
 import 'package:judouapp/pages/moments/MomentsPage.dart';
 import 'package:judouapp/pages/mine/MinePage.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
+
 
 class TabBarController extends StatelessWidget {
   @override
@@ -72,7 +74,22 @@ class MainPageState extends State<MainPageWidget> {
     );
   }
 
-  void initData() {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //初始化数据
+    _initData();
+    _startupJpush();
+
+  }
+
+  void _startupJpush() async {
+    print("初始化jpush");
+    JPush().setup();
+    print("初始化jpush成功");
+  }
+  void _initData() {
     tabImages = [
       [
         getTabImage('images/tab/tab_home.png'),
@@ -103,9 +120,6 @@ class MainPageState extends State<MainPageWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    //初始化数据
-    initData();
-
     return Scaffold(
       body: pageList[_tabIndex],
       bottomNavigationBar: BottomNavigationBar(
