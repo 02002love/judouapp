@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:judouapp/utils/HttpRequest.dart';
-import 'model/home_model.dart';
+import 'package:judouapp/pages/hompage/model/home_model.dart';
 import 'package:judouapp/utils/Config.dart';
 
 import 'package:flutter_refresh/flutter_refresh.dart';
 import 'package:judouapp/widget/HomeScrollview.dart';
 import 'package:judouapp/widget/CustomButton.dart';
 
-import '../../utils/AdaptDevice.dart';
+import 'package:judouapp/utils/AdaptDevice.dart';
 
 //import 'package:flutter_swiper/flutter_swiper.dart';
 //import 'package:carousel_slider/carousel_slider.dart';

@@ -26,7 +26,7 @@ dependencies:
   flutter_refresh : ^0.0.1 #上拉加载下拉刷新
   dio: ^1.0.0 #网络请求
   json_annotation: ^0.2.3
-#  flutter_swiper : ^1.1.4
+  flutter_swiper : ^1.1.6
 #  carousel_slider: ^1.1.0
   common_utils: 1.0.9 #工具类,https://pub.dartlang.org/packages/common_utils
   cached_network_image: ^0.6.2 #加载网络图片

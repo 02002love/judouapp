@@ -9,9 +9,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:judouapp/pages/moments/view/SquareCell.dart';
+import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
+
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
-import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 
 class HomeDetailPage extends StatefulWidget {
@@ -67,25 +68,25 @@ class _HomeDetailPageState extends State<HomeDetailPage>
             Container(
               color: Color.fromARGB(255, 249, 249, 249),
               child: SquareCell(
-                  isFromHomePage: true,
-                  isVerified:
-                      model.author == null ? false : model.author.isVerified,
-                  avatar: model.author == null
-                      ? model.reference.cover
-                      : (model.author.cover.length == 0
-                          ? 'http://judou.b0.upaiyun.com/uploads/authors/2018/05/367eb2cd-ab3e-4720-8b48-c3d64272f8b8.png'
-                          : model.author.cover),
-                  nickname: model.author == null
-                      ? model.reference.name
-                      : model.author.name,
-                  publishedAt: //设置为东八区
-                      (int.parse(model.publishedAt) + 28800).toString(),
-                  uuid: model.uuid,
-                  content: model.content,
-                  picUrl:
-                      model.pictures.length == 0 ? '' : model.pictures[0].url,
-                  likeCount: model.likeCount.toString(),
-                  commentCount: model.commentCount.toString()),
+                isFromHomePage: true,
+                isVerified:
+                    model.author == null ? false : model.author.isVerified,
+                avatar: model.author == null
+                    ? model.reference.cover
+                    : (model.author.cover.length == 0
+                        ? Config.defaultIconImage
+                        : model.author.cover),
+                nickname: model.author == null
+                    ? model.reference.name
+                    : model.author.name,
+                publishedAt: //设置为东八区
+                    (int.parse(model.publishedAt) + 28800).toString(),
+                uuid: model.uuid,
+                content: model.content,
+                picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
+                likeCount: model.likeCount.toString(),
+                commentCount: model.commentCount.toString(),
+              ),
             ),
             Container(
               height: AdaptDevice.px(550),
@@ -108,7 +109,7 @@ class _HomeDetailPageState extends State<HomeDetailPage>
     }
   }
 
-  /*加载广场详情数据*/
+  /* 加载首页详情数据-和广场数据一致 */
   fetchSquareDetailData() async {
     var result = await HttpRequest.request(Config.moments_squareDetailUrl +
         widget.momentId +

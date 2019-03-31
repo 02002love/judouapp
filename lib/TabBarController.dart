@@ -80,14 +80,14 @@ class MainPageState extends State<MainPageWidget> {
     super.initState();
     //初始化数据
     _initData();
-    _startupJpush();
+    _setupJPush();
 
   }
 
-  void _startupJpush() async {
-    print("初始化jpush");
-    JPush().setup();
-    print("初始化jpush成功");
+  void _setupJPush() async {
+//    print("初始化jpush");
+//    JPush().setup();
+//    print("初始化jpush成功");
   }
   void _initData() {
     tabImages = [
