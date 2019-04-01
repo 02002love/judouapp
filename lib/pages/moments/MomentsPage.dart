@@ -7,6 +7,8 @@
  * Description：动态
  */
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:judouapp/utils/AdaptDevice.dart';
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
@@ -206,34 +208,34 @@ class _MomentsPageState extends State<MomentsPage>
 
   /*创建 广场的listView*/
   createSquareList() {
-//    if (dataList.length == 0) {
-//      return CupertinoActivityIndicator();
-//    } else {
-    return ListView.builder(
+    if (squareDataList.length == 0) {
+      return CupertinoActivityIndicator();
+    } else {
+      return ListView.builder(
 //      physics: physics,
 //      controller: controller,
-      itemCount: squareDataList.length,
-      itemBuilder: (BuildContext context, int position) {
-        return createItem(squareDataList[position], 0, context); //0 : 广场 list
-      },
-    );
-//    }
+        itemCount: squareDataList.length,
+        itemBuilder: (BuildContext context, int position) {
+          return createItem(squareDataList[position], 0, context); //0 : 广场 list
+        },
+      );
+    }
   }
 
   /*创建 日记的listView*/
   createDiariesList() {
-//    if (dataList.length == 0) {
-//      return CupertinoActivityIndicator();
-//    } else {
-    return ListView.builder(
+    if (diariesDataList.length == 0) {
+      return CupertinoActivityIndicator();
+    } else {
+      return ListView.builder(
 //      physics: physics,
 //      controller: controller,
-      itemCount: diariesDataList.length,
-      itemBuilder: (BuildContext context, int position) {
-        return createItem(diariesDataList[position], 2, context); //2: 日记 list
-      },
-    );
-//    }
+        itemCount: diariesDataList.length,
+        itemBuilder: (BuildContext context, int position) {
+          return createItem(diariesDataList[position], 2, context); //2: 日记 list
+        },
+      );
+    }
   }
 
   /*创建 item
@@ -308,7 +310,7 @@ class _MomentsPageState extends State<MomentsPage>
     });
   }
 
-  /*加载数据*/
+  /*加载日记数据*/
   fetchDiariesData() async {
     var result = await HttpRequest.request(Config.moments_diariesUrl);
     List data = result['data'];
