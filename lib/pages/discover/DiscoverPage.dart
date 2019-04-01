@@ -16,7 +16,7 @@ import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
+import 'package:judouapp/pages/discover/model/discover_mark_model.dart';
 import 'package:judouapp/pages/moments/view/SquareCell.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -31,14 +31,14 @@ class _DiscoverPageState extends State<DiscoverPage>
   List banners = []; //banner的数组
   List marksData = []; //mark的数组
   List<Tab> marksTab = <Tab>[]; //mark的Tab数组
-  List<HomeDetailModel> otherListData = []; //列表的公共数组
+  List<DiscoverMarkModel> otherListData = []; //列表的公共数组
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
-    _fetchFindPageMarkData();
-    _fetchFindPageBannerData();
+    _fetchDiscoverPageMarkData();
+    _fetchDiscoverPageBannerData();
   }
 
   @override
@@ -52,36 +52,45 @@ class _DiscoverPageState extends State<DiscoverPage>
     return marksTab.length == 0
         ? Container()
         : DefaultTabController(
-      length: marksTab.length,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          bottom: TabBar(
-            unselectedLabelColor: Color.fromARGB(255, 143, 148, 149),
-            labelStyle: TextStyle(
-              fontSize: AdaptDevice.px(35),
-            ),
-            tabs: marksTab,
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: UnderlineTabIndicator(
-              insets: EdgeInsets.only(
-                bottom: AdaptDevice.px(10),
-                left: AdaptDevice.px(14),
-                right: AdaptDevice.px(14),
+            length: marksTab.length,
+            child: Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                bottom: TabBar(
+                  unselectedLabelColor: Color.fromARGB(255, 143, 148, 149),
+                  labelStyle: TextStyle(
+                    fontSize: AdaptDevice.px(35),
+                  ),
+                  tabs: marksTab,
+                  onTap: (int index) {
+                    _tabOnTap(index);
+                  },
+                  isScrollable: true,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicator: UnderlineTabIndicator(
+                    insets: EdgeInsets.only(
+                      bottom: AdaptDevice.px(10),
+                      left: AdaptDevice.px(14),
+                      right: AdaptDevice.px(14),
+                    ),
+                    borderSide: BorderSide(
+                        color: Color.fromARGB(255, 194, 199, 212),
+                        width: AdaptDevice.px(5),
+                        style: BorderStyle.solid),
+                  ),
+                ),
               ),
-              borderSide: BorderSide(
-                  color: Color.fromARGB(255, 194, 199, 212),
-                  width: AdaptDevice.px(5),
-                  style: BorderStyle.solid),
+              body: TabBarView(
+                children: _createDiscoverTabBarItem(marksTab),
+              ),
             ),
-          ),
-        ),
-        body: TabBarView(
-          children: _createDiscoverTabBarItem(marksTab),
-        ),
-      ),
-    );
+          );
+  }
+
+  _tabOnTap(int index) {
+    if (index != 0) {
+      _fetchDiscoverPageOtherMarkData(marksData[index - 1]['id']);
+    }
   }
 
   /*创建 mark 的 itemPage*/
@@ -95,7 +104,9 @@ class _DiscoverPageState extends State<DiscoverPage>
         );
       } else {
         try {
-          _createOtherList(marksData[i - 1]['id']);
+          marksTabs.add(
+            _createOtherList(),
+          );
         } catch (e) {
           print('异常:$e');
         }
@@ -116,8 +127,7 @@ class _DiscoverPageState extends State<DiscoverPage>
   }
 
   /*创建 其他页面的listView*/
-  _createOtherList(int id) {
-    _fetchFindPageOtherMarkData(id);
+  _createOtherList() {
     if (otherListData.length == 0) {
       return CupertinoActivityIndicator();
     } else {
@@ -132,22 +142,19 @@ class _DiscoverPageState extends State<DiscoverPage>
     }
   }
 
-  _createListCell(HomeDetailModel model) {
+  _createListCell(DiscoverMarkModel model) {
     //公用首页的 cell
     return SquareCell(
       isFromHomePage: true,
-      isVerified:
-      model.author == null ? false : model.author.isVerified,
+      isVerified: model.author == null ? false : model.author.isVerified,
       avatar: model.author == null
           ? model.reference.cover
           : (model.author.cover.length == 0
-          ? Config.defaultIconImage
-          : model.author.cover),
-      nickname: model.author == null
-          ? model.reference.name
-          : model.author.name,
+              ? Config.defaultIconImage
+              : model.author.cover),
+      nickname: model.author == null ? model.reference.name : model.author.name,
       publishedAt: //设置为东八区
-      (int.parse(model.publishedAt) + 28800).toString(),
+          (int.parse(model.publishedAt) + 28800).toString(),
       uuid: model.uuid,
       content: model.content,
       picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
@@ -160,36 +167,36 @@ class _DiscoverPageState extends State<DiscoverPage>
   _initBannerView() {
     return banners.length > 0
         ? Container(
-      height: AdaptDevice.screenW() * .5,
-      width: AdaptDevice.screenW(),
-      child: Swiper(
-        itemCount: banners.length,
-        itemBuilder: (BuildContext ctx, int index) {
-          return CachedNetworkImage(
-            imageUrl: banners[index]['cover'],
-            fit: BoxFit.cover,
             height: AdaptDevice.screenW() * .5,
             width: AdaptDevice.screenW(),
-          );
-        },
-        autoplay: true,
-        duration: 500,
-        autoplayDisableOnInteraction: false,
-        pagination: SwiperPagination(
-          builder: DotSwiperPaginationBuilder(
-            color: Colors.white70,
-            activeColor: Colors.white,
-            activeSize: AdaptDevice.px(22),
-          ),
-        ),
-      ),
-    )
+            child: Swiper(
+              itemCount: banners.length,
+              itemBuilder: (BuildContext ctx, int index) {
+                return CachedNetworkImage(
+                  imageUrl: banners[index]['cover'],
+                  fit: BoxFit.cover,
+                  height: AdaptDevice.screenW() * .5,
+                  width: AdaptDevice.screenW(),
+                );
+              },
+              autoplay: true,
+              duration: 500,
+              autoplayDisableOnInteraction: false,
+              pagination: SwiperPagination(
+                builder: DotSwiperPaginationBuilder(
+                  color: Colors.white70,
+                  activeColor: Colors.white,
+                  activeSize: AdaptDevice.px(22),
+                ),
+              ),
+            ),
+          )
         : Container();
   }
 
   /* 加载发现-标签数据 */
-  _fetchFindPageMarkData() async {
-    var result = await HttpRequest.request(Config.findMarkUrl);
+  _fetchDiscoverPageMarkData() async {
+    var result = await HttpRequest.request(Config.discoverMarkUrl);
     if (result != null) {
       List temp = result['data'];
       marksTab.add(
@@ -211,9 +218,8 @@ class _DiscoverPageState extends State<DiscoverPage>
   }
 
   /* 加载发现-banner数据 */
-  _fetchFindPageBannerData() async {
-    var result = await HttpRequest.request(Config.findBannerUrl);
-    print(result);
+  _fetchDiscoverPageBannerData() async {
+    var result = await HttpRequest.request(Config.discoverBannerUrl);
     if (result != null) {
       List temp = result['data'];
       setState(() {
@@ -223,15 +229,15 @@ class _DiscoverPageState extends State<DiscoverPage>
   }
 
   /* 加载发现之外的 mark 的数据 */
-  _fetchFindPageOtherMarkData(int id) async {
-    var result = await HttpRequest.request(
-        Config.findSingleMarkUrl + id.toString() +
-            Config.findSingleMarkUrlPart);
+  _fetchDiscoverPageOtherMarkData(int id) async {
+    var result = await HttpRequest.request(Config.discoverSingleMarkUrl +
+        id.toString() +
+        Config.discoverSingleMarkUrlPart);
     if (result != null) {
       List temp = result['data'];
       setState(() {
         for (var item in temp) {
-          HomeDetailModel model = HomeDetailModel.fromJson(item);
+          DiscoverMarkModel model = DiscoverMarkModel.fromJson(item);
           otherListData.add(model);
         }
       });
