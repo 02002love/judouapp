@@ -136,30 +136,64 @@ class _DiscoverPageState extends State<DiscoverPage>
 //      controller: controller,
         itemCount: otherListData.length,
         itemBuilder: (BuildContext context, int position) {
-          return _createListCell(otherListData[position]); //0 : 广场 list
+          return _createListCell(otherListData[position], context); //0 : 广场 list
         },
       );
     }
   }
 
-  _createListCell(DiscoverMarkModel model) {
-    //公用首页的 cell
-    return SquareCell(
-      isFromHomePage: true,
-      isVerified: model.author == null ? false : model.author.isVerified,
-      avatar: model.author == null
-          ? model.reference.cover
-          : (model.author.cover.length == 0
-              ? Config.defaultIconImage
-              : model.author.cover),
-      nickname: model.author == null ? model.reference.name : model.author.name,
-      publishedAt: //设置为东八区
-          (int.parse(model.publishedAt) + 28800).toString(),
-      uuid: model.uuid,
-      content: model.content,
-      picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
-      likeCount: model.likeCount.toString(),
-      commentCount: model.commentCount.toString(),
+//  _createListCell(DiscoverMarkModel model) {
+//    //公用首页的 cell
+//    return SquareCell(
+//      isFromHomePage: true,
+//      isVerified: model.author == null ? false : model.author.isVerified,
+//      avatar: model.author == null
+//          ? model.reference.cover ?? Config.defaultIconImage
+//          : (model.author.cover.length == 0
+//              ? Config.defaultIconImage
+//              : model.author.cover),
+//      nickname: model.author == null ? model.reference.name : model.author.name,
+//      publishedAt: '',
+//      uuid: model.uuid,
+//      content: model.content,
+//      picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
+//      likeCount: model.likeCount.toString(),
+//      commentCount: model.commentCount.toString(),
+//    );
+//  }
+
+  _createListCell(DiscoverMarkModel item, context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext ctx) {
+            return;
+            //SquareDetailPage(momentId: item.uuid);
+          }),
+        );
+      },
+      child: Column(
+        children: <Widget>[
+          SquareCell(
+            isFromHomePage: true,
+            isVerified: item.author == null ? false : item.author.isVerified,
+            avatar: item.author == null ? item.reference.cover ?? Config.defaultIconImage : item.author.cover ?? Config.defaultIconImage,
+            nickname: item.author == null ? item.reference.name : item.author.name,
+            publishedAt: '',
+            uuid: item.uuid,
+            content: item.content,
+            picUrl: item.pictures.length == 0 ? '' : item.pictures[0].url,
+            likeCount: item.likeCount.toString(),
+            commentCount: item.commentCount.toString(),
+          ),
+          Container(
+            //灰色的分割线
+            color: Color.fromARGB(255, 240, 241, 242),
+            height: AdaptDevice.px(20),
+          ),
+        ],
+      ),
     );
   }
 
@@ -236,9 +270,12 @@ class _DiscoverPageState extends State<DiscoverPage>
     if (result != null) {
       List temp = result['data'];
       setState(() {
+        otherListData.clear();
         for (var item in temp) {
           DiscoverMarkModel model = DiscoverMarkModel.fromJson(item);
-          otherListData.add(model);
+          if (model.isAd) {
+          } else
+            otherListData.add(model);
         }
       });
     }
