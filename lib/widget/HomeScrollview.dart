@@ -267,7 +267,6 @@ class _HomeScrollItemState extends State<HomeScrollItem>
             ],
           ),
           onTap: () {
-            print('跳转详情');
             Navigator.push(
               context,
               MaterialPageRoute(builder: (BuildContext ctx) {

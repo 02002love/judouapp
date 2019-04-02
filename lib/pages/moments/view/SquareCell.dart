@@ -130,7 +130,7 @@ class TopOfItem extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Text(
-                          nickname,
+                          nickname ?? '',
                           style: TextStyle(
                             fontSize: AdaptDevice.px(30),
                             fontFamily: 'NotoSansCJKsc-Light',

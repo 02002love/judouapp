@@ -28,6 +28,9 @@ class _DiscoverPageState extends State<DiscoverPage>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
+  TabController currentTabController; //当前的 tabController
+  int currentIndex; //当前的 tabController的 index
+
   List banners = []; //banner的数组
   List marksData = []; //mark的数组
   List<Tab> marksTab = <Tab>[]; //mark的Tab数组
@@ -35,10 +38,11 @@ class _DiscoverPageState extends State<DiscoverPage>
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
+//    _controller = AnimationController(vsync: this);
     super.initState();
     _fetchDiscoverPageMarkData();
     _fetchDiscoverPageBannerData();
+
   }
 
   @override
@@ -57,6 +61,7 @@ class _DiscoverPageState extends State<DiscoverPage>
               appBar: AppBar(
                 elevation: 0,
                 bottom: TabBar(
+                  controller: currentTabController,
                   unselectedLabelColor: Color.fromARGB(255, 143, 148, 149),
                   labelStyle: TextStyle(
                     fontSize: AdaptDevice.px(35),
@@ -81,6 +86,7 @@ class _DiscoverPageState extends State<DiscoverPage>
                 ),
               ),
               body: TabBarView(
+                controller: currentTabController,
                 children: _createDiscoverTabBarItem(marksTab),
               ),
             ),
@@ -141,26 +147,6 @@ class _DiscoverPageState extends State<DiscoverPage>
       );
     }
   }
-
-//  _createListCell(DiscoverMarkModel model) {
-//    //公用首页的 cell
-//    return SquareCell(
-//      isFromHomePage: true,
-//      isVerified: model.author == null ? false : model.author.isVerified,
-//      avatar: model.author == null
-//          ? model.reference.cover ?? Config.defaultIconImage
-//          : (model.author.cover.length == 0
-//              ? Config.defaultIconImage
-//              : model.author.cover),
-//      nickname: model.author == null ? model.reference.name : model.author.name,
-//      publishedAt: '',
-//      uuid: model.uuid,
-//      content: model.content,
-//      picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
-//      likeCount: model.likeCount.toString(),
-//      commentCount: model.commentCount.toString(),
-//    );
-//  }
 
   _createListCell(DiscoverMarkModel item, context) {
     return InkWell(
@@ -248,6 +234,14 @@ class _DiscoverPageState extends State<DiscoverPage>
           );
         }
       });
+      currentTabController = TabController(vsync: this, initialIndex: 0, length: temp.length + 1);
+      currentTabController.addListener((){
+        if(currentTabController.indexIsChanging){
+          if(currentTabController.index != 0){
+            _fetchDiscoverPageOtherMarkData(marksData[currentTabController.index - 1]['id']);
+          }
+        }
+      });
     }
   }
 
@@ -267,6 +261,7 @@ class _DiscoverPageState extends State<DiscoverPage>
     var result = await HttpRequest.request(Config.discoverSingleMarkUrl +
         id.toString() +
         Config.discoverSingleMarkUrlPart);
+    print('加载发现之外的 mark 的数据');
     if (result != null) {
       List temp = result['data'];
       setState(() {
