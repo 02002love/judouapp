@@ -74,7 +74,7 @@ class _DiariesDetailPageState extends State<DiariesDetailPage>
               avatar: widget.avatar,
               nickname: widget.nickname,
               publishedAt: //设置为东八区
-                  (int.parse(widget.publishedAt)).toString(),
+                  (int.parse(widget.publishedAt) * 1000).toString(),
               uuid: widget.uuid,
               content: widget.content,
               picUrl: widget.picUrl,

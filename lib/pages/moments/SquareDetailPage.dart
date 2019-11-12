@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 /**
  * PackageName：judouapp
  * Author     ：songjinwei
@@ -82,16 +83,17 @@ class _SquareDetailPageState extends State<SquareDetailPage>
             Container(
               color: Color.fromARGB(255, 249, 249, 249),
               child: SquareCell(
-                  avatar: model.user.avatar,
-                  nickname: model.user.nickname,
-                  publishedAt: //设置为东八区
-                      (int.parse(model.publishedAt) + 28800).toString(),
-                  uuid: model.uuid,
-                  content: model.content,
-                  picUrl:
-                      model.pictures.length == 0 ? '' : model.pictures[0].url,
-                  likeCount: model.likeCount.toString(),
-                  commentCount: model.commentCount.toString(),),
+                avatar: model.user.avatar,
+                nickname: model.user.nickname,
+                publishedAt: (model.publishedAt * 1000).toString(),
+                uuid: model.uuid,
+                content: model.content,
+                picUrl: model.pictures == null || model.pictures.isEmpty
+                    ? ''
+                    : model.pictures[0].url,
+                likeCount: model.likeCount.toString(),
+                commentCount: model.commentCount.toString(),
+              ),
             ),
             Container(
               height: AdaptDevice.px(550),

@@ -84,7 +84,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchChinaDateData(widget.item.publishedAt);
+    // fetchChinaDateData(widget.item.publishedAt);
   }
 
   @override

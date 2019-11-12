@@ -113,10 +113,10 @@ class TopOfItem extends StatelessWidget {
                     ),
                     Text(
                         //日期中文显示: 五分钟前
-                        TimelineUtil.format(int.parse(publishedAt) * 1000,
+                        TimelineUtil.format(int.parse(publishedAt),
                                 locTimeMillis:
                                     DateTime.now().millisecondsSinceEpoch,
-                                locale: 'zh',
+                                locale: 'zh_normal',
                                 dayFormat: DayFormat.Full) +
                             '发布',
                         style: TextStyle(
