@@ -111,8 +111,6 @@ class HomePageState extends State<HomePage> {
     setState(() {
       for (var item in data) {
         HomeModel model = HomeModel.fromJson(item);
-        if (model.isAd) {
-        } else
           dataList.add(model);
       }
       HomeModel firstModel = dataList[0];

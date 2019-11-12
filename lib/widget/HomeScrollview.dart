@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 /**
  * PackageName：judouapp
  * Author     ：songjinwei
@@ -83,7 +84,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchChinaDateData(widget.item.dailyDate);
+    fetchChinaDateData(widget.item.publishedAt);
   }
 
   @override
@@ -101,14 +102,13 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                     alignment: Alignment.center,
                     child: Center(
                       child: CachedNetworkImage(
-                        imageUrl: widget.item.image.url,
+                        imageUrl: widget.item.pictures[0].url,
                         placeholder: (context, url) => Container(
-                              alignment: Alignment.center,
-                              child: CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation(Colors.black87),
-                              ),
-                            ),
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.black87),
+                          ),
+                        ),
                         errorWidget: (context, url, error) {
                           return Container(
                             alignment: Alignment.center,
@@ -184,8 +184,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                     ),
                     child: Container(
                       child: Text(
-                        widget.item.dailyDate
-                            .substring(widget.item.dailyDate.length - 2),
+                        DateUtil.getDateStrByMs(widget.item.publishedAt,format: DateFormat.HOUR_MINUTE),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 110,
@@ -219,9 +218,7 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                       top: AdaptDevice.px(500),
                     ),
                     child: Text(
-                      widget.item.dailyDate
-                          .substring(0, 7)
-                          .replaceAll('-', '.'),
+                      DateUtil.getDateStrByMs(widget.item.publishedAt * 1000,format: DateFormat.YEAR_MONTH) + '  ' + DateUtil.getZHWeekDayByMs(widget.item.publishedAt * 1000),
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         fontFamily: 'NotoSansCJKsc-Light',

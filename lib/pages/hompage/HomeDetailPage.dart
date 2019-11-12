@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 /**
  * PackageName：judouapp
  * Author     ：songjinwei
@@ -71,16 +72,12 @@ class _HomeDetailPageState extends State<HomeDetailPage>
                 isFromHomePage: true,
                 isVerified:
                     model.author == null ? false : model.author.isVerified,
-                avatar: model.author == null
-                    ? model.reference.cover
-                    : (model.author.cover.length == 0
+                avatar: (model.author.cover.length == 0
                         ? Config.defaultIconImage
                         : model.author.cover),
-                nickname: model.author == null
-                    ? model.reference.name
-                    : model.author.name,
+                nickname: model.author.name,
                 publishedAt: //设置为东八区
-                    (int.parse(model.publishedAt) + 28800).toString(),
+                    DateUtil.getDateStrByMs(model.publishedAt * 1000,format: DateFormat.YEAR_MONTH),
                 uuid: model.uuid,
                 content: model.content,
                 picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,
