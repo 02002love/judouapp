@@ -35,6 +35,10 @@ dependencies:
   jpush_flutter: ^0.0.11 #极光推送
 
   save_image_2_native: ^0.0.3 #保存图片到本地相册
+  # chewie: ^0.9.8+1
+  # video_player: ^0.10.2+5
+  # flutter_ijkplayer: ^0.3.5
+  webview_flutter: ^0.3.15+1
 
 dev_dependencies:
   flutter_test:

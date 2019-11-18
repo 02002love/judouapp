@@ -76,7 +76,8 @@ class _MomentsPageState extends State<MomentsPage>
             style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontFamily: 'NotoSansCJKsc-Light',
-                color: Colors.black),
+                color: Colors.black
+                ),
           ),
           actions: <Widget>[
             PopupMenuButton(
