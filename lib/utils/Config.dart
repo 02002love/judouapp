@@ -9,7 +9,8 @@
 
 class Config {
   //公共 - 默认图片
-  static const String defaultIconImage = 'http://judou.b0.upaiyun.com/uploads/authors/2018/05/367eb2cd-ab3e-4720-8b48-c3d64272f8b8.png';
+  static const String defaultIconImage =
+      'https://upload-images.jianshu.io/upload_images/1155000-7351040983cb5451.png?imageMogr2/auto-orient/strip|imageView2/2/w/180/format/webp';
   //公共 - 基本 API
   static const String BaseUrl = 'https://judouapp.com/api';
 
@@ -18,14 +19,17 @@ class Config {
       '/v6/op/sentences/daily?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&page=1&per_page=45&platform=ios&signature=905e4a858fa60c57a4f7a139425fafa3&system_version=12.1.4&timestamp=1553143415&version=3.7.0&version_code=45';
 
   //发现 - 所有 mark 数据
-  static const String discoverMarkUrl = '/v5/tags/list?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=04b1955d3732b21f00ea0616a0ebe555&system_version=12.1.4&timestamp=1554059250&version=3.7.0&version_code=45';
+  static const String discoverMarkUrl =
+      '/v5/tags/list?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=04b1955d3732b21f00ea0616a0ebe555&system_version=12.1.4&timestamp=1554059250&version=3.7.0&version_code=45';
 
   //发现 - banner 数据
-  static const String discoverBannerUrl = '/v5/recommends/carousels?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=afbb8333c5b520ad3dc747d94853346e&system_version=12.1.4&timestamp=1554010765&version=3.7.0&version_code=45';
+  static const String discoverBannerUrl =
+      '/v5/recommends/carousels?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&platform=ios&signature=afbb8333c5b520ad3dc747d94853346e&system_version=12.1.4&timestamp=1554010765&version=3.7.0&version_code=45';
 
   //发现 - 单个 mark 的list 数据
   static const String discoverSingleMarkUrl = '/v5/tags/';
-  static const String discoverSingleMarkUrlPart = '/time_sorted_sentences?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&page=1&per_page=20&platform=ios&signature=5154d18863c45ea80b9e5a1f3fda6001&system_version=12.1.4&timestamp=1554072041&version=3.7.0&version_code=45';
+  static const String discoverSingleMarkUrlPart =
+      '/time_sorted_sentences?app_key=af66b896-665e-415c-a119-6ca5233a6963&channel=App%20Store&device_id=4e8a064b770d7c32ad0df01e8f9c0a83&device_type=iPhone9%2C1&page=1&per_page=20&platform=ios&signature=5154d18863c45ea80b9e5a1f3fda6001&system_version=12.1.4&timestamp=1554072041&version=3.7.0&version_code=45';
 
   //动态 - 广场列表
   static const String moments_squareUrl =

@@ -47,7 +47,7 @@ class _HomeDetailPageState extends State<HomeDetailPage>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('详情'),
+        title: Text('金句'),
       ),
       body: Container(
         child: createChild(),
@@ -72,12 +72,13 @@ class _HomeDetailPageState extends State<HomeDetailPage>
                 isFromHomePage: true,
                 isVerified:
                     model.author == null ? false : model.author.isVerified,
-                avatar: (model.author.cover.length == 0
-                        ? Config.defaultIconImage
-                        : model.author.cover),
-                nickname: model.author.name,
+                avatar: model.author == null || model.author.cover == null
+                    ? Config.defaultIconImage
+                    : model.author.cover,
+                nickname: model.author == null ? '佚名' : model.author.name,
                 publishedAt: //设置为东八区
-                    DateUtil.getDateStrByMs(model.publishedAt * 1000,format: DateFormat.YEAR_MONTH),
+                    DateUtil.getDateStrByMs(model.publishedAt * 1000,
+                        format: DateFormat.YEAR_MONTH),
                 uuid: model.uuid,
                 content: model.content,
                 picUrl: model.pictures.length == 0 ? '' : model.pictures[0].url,

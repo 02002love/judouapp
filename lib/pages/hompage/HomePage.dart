@@ -56,6 +56,7 @@ class HomePageState extends State<HomePage> {
           ),
           child: ImageIcon(
             AssetImage('images/home/home_title.png'),
+            size: AdaptDevice.px(btnWH),
           ),
         ),
         actions: <Widget>[
@@ -111,7 +112,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       for (var item in data) {
         HomeModel model = HomeModel.fromJson(item);
-          dataList.add(model);
+        dataList.add(model);
       }
       HomeModel firstModel = dataList[0];
       commentCount = firstModel.commentCount.toString();
