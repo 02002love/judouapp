@@ -49,7 +49,7 @@ class _CustomButtonState extends State<CustomButton> {
             ),
             Container(
               height: widget.titleHeight,
-              padding: EdgeInsets.only(left: AdaptDevice.px(8)),
+              padding: EdgeInsets.only(left: AdaptDevice.px(0)),
               child: Text(
                 LongString2shortString.transForm(widget.title),
                 style: TextStyle(

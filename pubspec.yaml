@@ -75,6 +75,8 @@ flutter:
     - images/home/icon_like.png
     - images/home/icon_like_selected.png
     - images/home/icon_author_reference_verified.png
+    - images/home/icon_nav_sentences.png
+    - images/home/icon_nav_more.png
   #动态
     - images/moments/icon_create_diary.png
     - images/moments/icon_create_sentence.png

@@ -15,6 +15,7 @@ import 'package:judouapp/pages/hompage/model/home_detail_model.dart';
 import 'package:judouapp/utils/HttpRequest.dart';
 import 'package:judouapp/utils/Config.dart';
 import 'package:judouapp/utils/AdaptDevice.dart';
+import 'package:judouapp/widget/CustomButton.dart';
 
 class HomeDetailPage extends StatefulWidget {
   HomeDetailPage({Key key, @required this.momentId}) : super(key: key);
@@ -28,7 +29,7 @@ class _HomeDetailPageState extends State<HomeDetailPage>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   HomeDetailModel model;
-
+  int btnWH = 50;
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
@@ -47,7 +48,35 @@ class _HomeDetailPageState extends State<HomeDetailPage>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('金句'),
+        title: Center(
+          child: Text('金句'),
+        ),
+        actions: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              right: AdaptDevice.px(20),
+            ),
+            child: CustomButton(
+              iconPath: 'images/home/icon_nav_sentences.png',
+              title: '',
+              btnHeight: AdaptDevice.px(btnWH),
+              btnWidth: AdaptDevice.px(btnWH),
+              titleHeight: 40,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              right: AdaptDevice.px(20),
+            ),
+            child: CustomButton(
+              iconPath: 'images/home/icon_nav_more.png',
+              title: '',
+              btnHeight: AdaptDevice.px(btnWH),
+              btnWidth: AdaptDevice.px(btnWH),
+              titleHeight: 40,
+            ),
+          ),
+        ],
       ),
       body: Container(
         child: createChild(),
