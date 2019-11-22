@@ -184,10 +184,14 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                     ),
                     child: Container(
                       child: Text(
-                        DateUtil.getDateStrByMs(widget.item.publishedAt,format: DateFormat.HOUR_MINUTE),
+                        DateUtil.formatDateStr(
+                            DateUtil.getDateStrByMs(
+                                widget.item.publishedAt * 1000,
+                                format: DateFormat.NORMAL),
+                            format: "dd"),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 110,
+                          fontSize: 105,
                           shadows: [
                             Shadow(
                                 // bottomLeft
@@ -218,7 +222,11 @@ class _HomeScrollItemState extends State<HomeScrollItem>
                       top: AdaptDevice.px(500),
                     ),
                     child: Text(
-                      DateUtil.getDateStrByMs(widget.item.publishedAt * 1000,format: DateFormat.YEAR_MONTH) + '  ' + DateUtil.getZHWeekDayByMs(widget.item.publishedAt * 1000),
+                      DateUtil.getDateStrByMs(widget.item.publishedAt * 1000,
+                              format: DateFormat.YEAR_MONTH) +
+                          ' ' +
+                          DateUtil.getZHWeekDay(DateUtil.getDateTimeByMs(
+                              widget.item.publishedAt * 1000)),
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         fontFamily: 'NotoSansCJKsc-Light',
